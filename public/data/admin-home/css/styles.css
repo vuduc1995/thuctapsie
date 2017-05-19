@@ -1,0 +1,119 @@
+head
+
+#header .header-top{
+	min-height: 34px;
+    background: #ffffff;
+    
+}
+
+#header .header-top .container-fluid .usermenu{
+	float: right;
+	color: #11998b;
+}
+#header .header-top .container-fluid .usermenu a{
+	color: #11998b;
+	text-decoration: underline;
+}
+
+#header .header-main .header-main-content{
+	padding: 15px 0 0;
+	background-color: #B22222;
+	color: #ffffff;
+}
+
+#header .header-main .header-main-content .container-fluid{
+	max-width: 1680px;
+    margin: 0 auto;
+}
+
+#header .header-main .header-main-content .container-fluid .breadcrum{
+	text-transform: uppercase;
+	
+}
+
+#header .header-main .header-main-content .container-fluid .breadcrum p{
+	font-size: 20px;
+	padding: 0px 0px 
+}
+
+#header .header-main .header-main-content .container-fluid .breadcrum h1{
+	font-size: 20px;
+	font-weight: bold;
+	padding: 0px 0px 
+}
+
+#logo{
+	width: 100%;
+    height: 100%;
+    margin: 0 0 9px;
+    opacity: 1;
+}
+
+
+
+.header-main-menubar .navbar .navbar-nav li:hover{
+	background: #e7e7e7;
+}
+
+
+.navbar-inner{
+	background: #CDC7B6;
+    border: 0;
+}
+
+.navbar-text{
+	font-size: 16px;
+	text-transform: uppercase;
+
+}
+
+#myCarousel{
+	padding-bottom: 30px;
+	
+}
+
+
+footer{
+	background-color: #B22222;
+	color: #ffffff;
+	font-size: 17px;
+	padding-bottom: 20px;
+}
+
+.footer-main .footer-logo{
+	padding-top: 15px;
+	text-align: center;
+}
+
+.footer-main .info{
+	font-size:13px; 
+	text-align: center;
+}
+
+	#header .header-main .header-main-content .container-fluid .user-menu .wrap-item{		
+	text-align: right;		
+}		
+#header .header-main .header-main-content .container-fluid .user-menu .wrap-item .menubar{		
+	text-transform: capitalize;		
+}		
+#header .header-main .header-main-content .container-fluid .user-menu .wrap-item a{		
+	text-decoration: none;		
+	color: black;		
+}		
+#header .header-main .header-main-content .container-fluid .user-menu .wrap-item .avatar{		
+	margin-left: 15px;		
+}		
+#header .header-main .header-main-content .container-fluid .user-menu .wrap-item img{		
+	width: 50px;		
+	height: 45px;		
+}		
+#header .header-main .header-main-content .container-fluid .user-menu .wrap-item ul li{		
+	list-style-type: none;		
+}		
+#header .header-main .header-main-content .container-fluid .user-menu .wrap-item .hidemenu{		
+	left: 147px;		
+	background: #e7e7e7;		
+}		
+#header .header-main .header-main-content .container-fluid .user-menu .wrap-item .hidemenu .divider{		
+	background: #ffffff;		
+}
