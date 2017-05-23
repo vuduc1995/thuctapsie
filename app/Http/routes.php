@@ -50,6 +50,10 @@ Route::post('/student/upEditProfile',array('uses'=>'StudentController@editProfil
 Route::post('/student/upFeedback',array('uses'=>'StudentController@feedback'));
 Route::post('/comp-representative/Registration/up',array('uses'=>'companyrepresentativeController@registration'));
 Route::post('/companyrepresentative/topic-list',array('uses'=>'companyrepresentativeController@updateTopics'));
+Route::post('/collegeintershipmanager/duyet-topic-2/accept',array('uses'=>'ColManagerController@accept'));
+Route::post('/collegeintershipmanager/duyet-topic-2/decline',array('uses'=>'ColManagerController@decline'));
+Route::post('/collegeintershipmanager/matched-list',array('uses'=>'ColManagerController@updateMatchedList'));
+Route::post('/companyinstructor/mark-2',array('uses'=>'CompanyInstructorController@updateReport'));
 
 Route::get('/student', function () {
    return view('stud-home');
@@ -80,45 +84,109 @@ Route::get('/collegeintershipmanager/matched-list', function () {
 
   $test = array();
 
-  foreach ($students as $student) {
+
+//UPDATE `db_sie4`.`aspiration` SET `speciality1`='PHP' WHERE `idAspiration`='9';
+
+
+//  foreach ($students as $student) {
     // map spe 1
-    $studWithSpe1List = \DB::select("select u.iduser,st.name,st.studid,a.speciality1 from user u inner join student st on st.Student_ID = u.iduser inner join aspiration a on u.iduser = a.StudenID inner join speciality s on a.speciality1 = s.name");
+    $studWithSpe1List = \DB::select("select u.iduser,st.name,st.studid,a.speciality1 from user u inner join student st on st.Student_ID = u.iduser inner join aspiration a on u.iduser = a.StudenID inner join speciality s on (a.speciality1 = s.name or a.speciality1 = s.idSpeciality)");
 
     foreach ($studWithSpe1List as $studWithSpe1) {
-      $compList = \DB::select("select c.Name,s.name,t.content from topic t inner join company c on t.CompanyID = c.idCompany
-inner join speciality s on t.SpecialityID = s.idSpeciality where s.name = ?", [$studWithSpe1->speciality1]);
+      $compList = \DB::select("select  t.idTopic,c.Name,c.idCompany,s.idSpeciality,s.name,t.content from topic t inner join company c on t.CompanyID = c.idCompany
+inner join speciality s on t.SpecialityID = s.idSpeciality where s.name = ? or s.idSpeciality = ?", [$studWithSpe1->speciality1, $studWithSpe1->speciality1]);
 
-      $small = array();
+      $t = $studWithSpe1->speciality1;
+      Log::info('test '.$t);
+
+      $topics = array();
       $companyName = "";
       $speciality = "";
+      $specialityName = "";
 
       foreach ($compList as $compTopic) {
         $v1 = $compTopic->Name;
-        $v2 = $compTopic->name;
+        $v2 = $compTopic->idSpeciality;
         $v3 = $compTopic->content;
 
         $companyName = $v1;
         $speciality = $v2;
+        $specialityName = $compTopic->name;
 
-        $small[] = $compTopic;//$v1.$v2.$v3;
+        $topics[] = array(
+          'idTopic' => $compTopic->idTopic,
+          'content' => $compTopic->content
+          );
       }
 
+      Log::info($companyName);
+      Log::info($speciality);
+      Log::info('ok');
+
       $test[] = array(
-        "id" => 1,
+        "iduser" => $studWithSpe1->iduser,
+        "idCompany" => $compList[0]->idCompany,
+        "idTopic" => $studWithSpe1->iduser.'.'.$compList[0]->idCompany,
         "studentName" => $studWithSpe1->name,
         "studentNumber" => $studWithSpe1->studid,
         "company" => $companyName,
         "speciality" => $speciality,
-        "list" => $small
-        );
+        "specialityName" => $specialityName,
+        "topics" => $topics
+      );
     }
-  }
+//  }
 
-  return view('col-manager-matched-list', ['test' => $test]);
+  return view('col-manager-matched-list', ['list' => $test]);
 });
 
 Route::get('/collegeintershipmanager/edit-profile', function () {
    return view('col-manager-profile');
+});
+
+Route::get('/collegeintershipmanager/duyet-topic-1', function () {
+  $companies = \DB::select("select * from company");
+  $list = array();
+
+  foreach ($companies as $company) {
+    $list[] = array(
+      'id'=>$company->idCompany,
+      'name'=>$company->Name);
+  }
+
+  return view('col-manager-duyet-topic-1', ['companies' => $list]);
+});
+
+Route::get('/collegeintershipmanager/duyet-topic-2/{id}', function ($id) {
+  $company = \DB::table('company')->where('idCompany',$id )->first();
+  $represent = \DB::table('companyrepresentative')->where('CompanyID',$id )->first();
+  $topics = \DB::select("select * from topic t inner join speciality s on t.SpecialityID = s.idSpeciality where t.CompanyID = ?", [$id]);
+  return view('col-manager-duyet-topic-2', ['company' => $company, 'represent' => $represent, 'topics' => $topics]);
+});
+
+Route::get('/collegeinstructor/mark-1', function () {
+ $students = \DB::select("select * from student");
+ $list = array();
+
+ foreach ($students as $student) {
+  $list[] = array (
+    'id'=>$student->id,
+    'name'=>$student->name,
+    'studnumber'=>$student->studid,
+    'class'=>$student->class) ;
+    # code...
+  } 
+  return view('col-instructor-mark-1', ['students' =>$list]);
+});
+
+Route::get('/collegeinstructor/mark-2/{id}', function ($id) {
+  $student = \DB::table('student')->where('id',$id )->first();
+  // $report = \DB::table('report')->where('idReport',$id )->first();
+  $reports = \DB::select("select * from report r inner join student s on r.idReport = s.Student_ID where r.idReport = ?", [$id]);
+  
+  return view('col-instructor-mark-2', ['student' => $student, 'report'=> $reports ]);
+   // ['company' => $company, 'represent' => $represent, 'topics' => $topics]
+    
 });
 
 Route::get('/companyrepresentative', function () {
@@ -163,12 +231,33 @@ Route::get('/companyrepresentative/Registration', function () {
    return view('comp-representative-regis');
 });
 
-Route::get('/companyinstructor', function () {
-   return view('comp-instructor-home');
+Route::get('/companyinstructor/mark-1', function () {
+ $students = \DB::select("select * from student");
+ $list = array();
+
+ foreach ($students as $student) {
+  $list[] = array (
+    'id'=>$student->id,
+    'name'=>$student->name,
+    'studnumber'=>$student->studid,
+    'class'=>$student->class) ;
+    # code...
+  } 
+  return view('comp-instructor-mark-1', ['students' =>$list]);
 });
 
-Route::get('/companyinstructor/mark', function () {
-   return view('comp-instructor-mark');
+Route::get('/companyinstructor/mark-2/{id}', function ($id) {
+  $student = \DB::table('student')->where('id',$id )->first();
+  // $report = \DB::table('report')->where('idReport',$id )->first();
+  // $reports = \DB::select("select * from report r inner join student s on r.idReport = s.Student_ID where r.idReport = ?", [$id]);
+
+  $report = \DB::table('reportdetail')->where('StudentID',$id )->first();
+
+  return view('comp-instructor-mark-2', ['studentId' => $id, 'student'=>$student, 'report' => $report]);
+});
+
+Route::get('/companyinstructor', function () {
+   return view('comp-instructor-home');
 });
 
 Route::get('/companyinstructor/timesheet', function () {

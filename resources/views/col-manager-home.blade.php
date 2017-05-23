@@ -100,6 +100,7 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="/collegeintershipmanager"><i class="fa fa-home" aria-hidden="true"></i> HOME<span class="sr-only">(current)</span></a></li>
 
+        <li><a href="/collegeintershipmanager/duyet-topic-1">Censorship</a></li>
         <li><a href="/collegeintershipmanager/matched-list">Matched list</a></li>
         <li><a href="#">Internship Assignment</a></li>
         <li><a href="#">Statistics</a></li>

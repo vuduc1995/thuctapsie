@@ -6,7 +6,7 @@
     <title>College manager matched information</title>
 
     <link rel ="stylesheet" type="text/css" href ="{{ URL::asset('css/font-awesome.min.css')}}" />
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/col.manager-matched-info/css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/col.manager-matched info/css/styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap.min.css') }}">
     <script type="text/javascript" src="{{ URL::asset('js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
@@ -129,15 +129,12 @@
 </div>
 <!--Custom theme slider-->
 <div class="form-register">
-  <<div class="container-fluid comparison">
+  <div class="container-fluid comparison">
       
         <h2>matched information</h2>
+                  <form  id ="myForm">
 
-    @foreach($test as $t)
-    {{$t->Name}} - {{$t->name}} - {{$t->content}} </br>
-    @endforeach
 
-               
                   <table id="t01">
                     <tr>
                       <th>No.</th>
@@ -148,21 +145,37 @@
                       <th>Topic</th>
                     </tr>
 
+
+                  @foreach($list as $i=>$item)
+
+                    <input class="form-control" type="hidden" value="{{$item['iduser']}}" name="iduser_{{$i}}">
+                    <input class="form-control" type="hidden" value="{{$item['idCompany']}}" name="idCompany_{{$i}}">
+                    <input class="form-control" type="hidden" value="{{$item['speciality']}}" name="speciality_{{$i}}">
+
                     <tr>
-                      <td>1</td>
-                      <td>Nguyễn Văn A</td>
-                      <td>20138111</td>
-                      <td>FPT</td>
-                      <td>Java</td>
+                      <td>{{$i}}</td>
+                      <td>{{$item['studentName']}}</td>
+                      <td>{{$item['studentNumber']}}</td>
+                      <td>{{$item['company']}}</td>
+                      <td>{{$item['specialityName']}}</td>
                       <td>
-                      <select name="Topic" >
-                        <option value="1">Big Data</option>
-                        <option value="2">Game</option>
-                        <option value="2">MySQL</option>
+                      <select name="topicList_{{$i}}" >
+    
+                      @foreach($item['topics'] as $topic)
+                      <option value="{{$topic['idTopic']}}">{{$topic['content']}}</option>
+                      @endforeach
+
                       </select></td>
                     </tr>
+
+                  @endforeach
+
+
   
                   </table>
+
+                  </form>
+
 
                   <form  class ="confirm">
                   <div class="text-center">
@@ -175,8 +188,8 @@
       </form>
      <p>Are you sure?</p>
       <form action="" method="" accept-charset="utf-8">
-        <input type="button" name="confirm" value="Confirm">
-        <input type="button" name="cancel" value="Cancel">
+        <input type="button" name="confirm" id="confirmDialog" value="Confirm">
+        <input type="button" name="cancel" id="closeDialog" value="Cancel">
       </form> 
      
     </dialog>  
@@ -191,7 +204,29 @@
             document.getElementById('exit').onclick = function() {  
                 dialog.close();  
             };
+            document.getElementById('closeDialog').onclick = function() {  
+                dialog.close();  
+            };
         })();
+
+
+var func = function(e){
+    e.preventDefault();
+    $.ajax({
+        url:'/collegeintershipmanager/matched-list',
+        type:'post',
+        data:$('#myForm').serialize(),
+        success:function(){
+            //whatever you wanna do after the form is successfully submitted
+        }
+    }).done(function( msg ) {
+      alert( msg );
+      location.reload();
+    });
+  };
+$(document).ready ( function () {
+   $(document).on('click', "#confirmDialog", e => func(e));
+});
 </script>
     </div>
              

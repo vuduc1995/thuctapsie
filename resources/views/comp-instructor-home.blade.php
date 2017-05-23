@@ -99,7 +99,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Intern <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="/companyinstructor/outline">Outline</a></li>
-            <li><a href="/companyinstructor/mark">Mark's form</a></li>
+            <li><a href="/companyinstructor/mark-1">Mark's form</a></li>
             <li><a href="/companyinstructor/timesheet">Timesheet</a></li>
             <li><a href="/companyinstructor/rate">Rate</a></li>
           </ul>

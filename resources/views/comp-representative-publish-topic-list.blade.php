@@ -61,7 +61,7 @@
                 </li>
 
                 <li>
-                  <a class ="menu-action" href="/companyrepresentative/profile">
+                  <a class ="menu-action" href="/companyrepresentative/edit-profile">
                     <i class="fa fa-user-md" aria-hidden="true"></i>
                     <span class="action-text">Profile</span>
                   </a>
@@ -107,7 +107,7 @@
          <li class="dropdown" id="formcv">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Form <span class="caret"></span></a>
           <ul class="dropdown-menu">
-             <li><a href="#">Registration</a></li>
+             <li><a href="/companyrepresentative/Registration">Registration</a></li>
              </ul>
         </li>
 
