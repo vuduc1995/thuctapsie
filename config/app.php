@@ -91,7 +91,7 @@ return [
     |
     */
 
-    'key' => env('APP_KEY', 'vuduc20101995vuduc20101995vuduc20101995vuduc20101995vuduc20101995'),
+    'key' => env('APP_KEY', 'WTFeRandomStringWith32Characters'),
 
     'cipher' => 'AES-256-CBC',
 

@@ -1,5 +1,14 @@
 heroku login
 
+config/app.php
+
+    'debug' => env('APP_DEBUG', true),
+
+    'key' => env('APP_KEY', 'WTFeRandomStringWith32Characters'), -> ok
+
+    'key' => env('APP_KEY', 'vuduc20101995vuduc20101995vuduc20101995vuduc20101995vuduc20101995'),
+
+
 vuduc20101995@gmail.com
 
 Dangvuduc1995
