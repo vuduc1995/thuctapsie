@@ -1,5 +1,7 @@
 heroku login
 
+heroku run console
+
 config/app.php
 
     'debug' => env('APP_DEBUG', true),
