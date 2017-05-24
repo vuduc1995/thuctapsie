@@ -45,15 +45,15 @@ class companyrepresentativeController extends Controller
         ->where('CompanyID', $comId)->delete();
 
         \DB::table('topic')->insert(
-         array('CompanyID' => $comId,'SpecialityID' => $speciality1, 'content' => $topic1, 'quantity' => $quantity1));
+         array('CompanyID' => $comId,'SpecialityID' => $speciality1, 'content' => $topic1, 'quantity' => $quantity1, 'quantityLeft' => 0));
         \DB::table('topic')->insert(
-         array('CompanyID' => $comId,'SpecialityID' => $speciality2, 'content' => $topic2, 'quantity' => $quantity2));
+         array('CompanyID' => $comId,'SpecialityID' => $speciality2, 'content' => $topic2, 'quantity' => $quantity2, 'quantityLeft' => 0));
         \DB::table('topic')->insert(
-         array('CompanyID' => $comId,'SpecialityID' => $speciality3, 'content' => $topic3, 'quantity' => $quantity3));
+         array('CompanyID' => $comId,'SpecialityID' => $speciality3, 'content' => $topic3, 'quantity' => $quantity3, 'quantityLeft' => 0));
         \DB::table('topic')->insert(
-         array('CompanyID' => $comId,'SpecialityID' => $speciality4, 'content' => $topic4, 'quantity' => $quantity4));
+         array('CompanyID' => $comId,'SpecialityID' => $speciality4, 'content' => $topic4, 'quantity' => $quantity4, 'quantityLeft' => 0));
         \DB::table('topic')->insert(
-         array('CompanyID' => $comId,'SpecialityID' => $speciality5, 'content' => $topic5, 'quantity' => $quantity5));
+         array('CompanyID' => $comId,'SpecialityID' => $speciality5, 'content' => $topic5, 'quantity' => $quantity5, 'quantityLeft' => 0));
 
         //  \DB::table('topic')->insert(
         //  array('CompanyID' => $comId,'SpecialityID' => $speciality1, 'content' => $topic1, 'quantity' => $quantity1));

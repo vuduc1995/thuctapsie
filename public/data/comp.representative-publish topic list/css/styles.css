@@ -129,6 +129,17 @@ head
 	color: red;
 }
 
+.main-form .button-group{
+	padding-left: 0;
+}
+
+
+
+.main-form .button-group span{
+	font-weight: bold;
+	margin-right: 10px;
+}
+
 
 footer{
 	background-color: #B22222;
