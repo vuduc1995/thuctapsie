@@ -22,7 +22,12 @@ class CompanyInstructorController extends Controller
             ${'cmt_WHBF_'.$i} = $request->{'cmt_WHBF_'.$i};
         }
 
+        $topic = null;
+        if (env('DB_CONNECTION') == 'mysql') {
         $topic = \DB::select("select * from reportdetail where StudentID = ?",[$studentId]);
+        } else if (env('DB_CONNECTION') == 'pgsql') {
+        $topic = \DB::select("select * from reportdetail where \"StudentID\" = ?",[$studentId]);
+        }
 
         if (sizeof($topic) == 0) {
             $tp = 'TTL';

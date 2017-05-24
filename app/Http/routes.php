@@ -110,8 +110,14 @@ Route::get('/collegeintershipmanager/matched-list', function () {
 
 
     foreach ($studWithSpe1List as $studWithSpe1) {
+      $compList = null;
+    if (env('DB_CONNECTION') == 'mysql') {
       $compList = \DB::select("select  t.idTopic,c.Name,c.idCompany,s.idSpeciality,s.name,t.content from topic t inner join company c on t.CompanyID = c.idCompany
 inner join speciality s on t.SpecialityID = s.idSpeciality where s.name = ? or s.idSpeciality = ?", [$studWithSpe1->speciality1, $studWithSpe1->speciality1]);
+    } else if (env('DB_CONNECTION') == 'pgsql') {
+      $compList = \DB::select("select  t.\"idTopic\",c.\"Name\",c.\"idCompany\",s.\"idSpeciality\",s.name,t.content from topic t inner join company c on t.\"CompanyID\" = c.\"idCompany\"
+inner join speciality s on t.\"SpecialityID\" = s.\"idSpeciality\" where s.name = ? or s.\"idSpeciality\" = ?", [$studWithSpe1->speciality1, $studWithSpe1->speciality1]);
+    }
 
       $t = $studWithSpe1->speciality1;
       Log::info('test '.$t);
@@ -177,7 +183,14 @@ Route::get('/collegeintershipmanager/duyet-topic-1', function () {
 Route::get('/collegeintershipmanager/duyet-topic-2/{id}', function ($id) {
   $company = \DB::table('company')->where('idCompany',$id )->first();
   $represent = \DB::table('companyrepresentative')->where('CompanyID',$id )->first();
+  $topics = null;
+  if (env('DB_CONNECTION') == 'mysql') {
   $topics = \DB::select("select * from topic t inner join speciality s on t.SpecialityID = s.idSpeciality where t.CompanyID = ?", [$id]);
+  } else if (env('DB_CONNECTION') == 'pgsql') {
+  $topics = \DB::select("select * from topic t inner join speciality s on t.\"SpecialityID\" = s.\"idSpeciality\" where t.\"CompanyID\" = ?", [$id]);
+  }
+
+
   return view('col-manager-duyet-topic-2', ['company' => $company, 'represent' => $represent, 'topics' => $topics]);
 });
 
@@ -199,7 +212,12 @@ Route::get('/collegeinstructor/mark-1', function () {
 Route::get('/collegeinstructor/mark-2/{id}', function ($id) {
   $student = \DB::table('student')->where('id',$id )->first();
   // $report = \DB::table('report')->where('idReport',$id )->first();
+  $reports = null;
+  if (env('DB_CONNECTION') == 'mysql') {
   $reports = \DB::select("select * from report r inner join student s on r.idReport = s.Student_ID where r.idReport = ?", [$id]);
+  } else if (env('DB_CONNECTION') == 'pgsql') {
+  $reports = \DB::select("select * from report r inner join student s on r.\"idReport\" = s.\"Student_ID\" where r.\"idReport\" = ?", [$id]);
+  }
   
   return view('col-instructor-mark-2', ['student' => $student, 'report'=> $reports ]);
    // ['company' => $company, 'represent' => $represent, 'topics' => $topics]

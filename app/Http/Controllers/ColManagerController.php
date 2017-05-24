@@ -31,8 +31,21 @@ class ColManagerController extends Controller
 
             Log::info(${'topicList_'.$i}.' vs '.${'iduser_'.$i}.' vs '.${'idCompany_'.$i}.' vs '.${'speciality_'.$i});
 
+            $cur = null;
+            if (env('DB_CONNECTION') == 'mysql') {
             $cur = \DB::select("select * from match_info where CompanyID = ? and StudentID = ?",[${'idCompany_'.$i},${'iduser_'.$i}]);
+            } else if (env('DB_CONNECTION') == 'pgsql') {
+            $cur = \DB::select("select * from match_info where \"CompanyID\" = ? and \"StudentID\" = ?",[${'idCompany_'.$i},${'iduser_'.$i}]);
+            }
+
+
+
+            $topic = null;
+            if (env('DB_CONNECTION') == 'mysql') {
             $topic = \DB::select("select * from topic where idTopic = ?",[${'topicList_'.$i}]);
+            } else if (env('DB_CONNECTION') == 'pgsql') {
+            $topic = \DB::select("select * from topic where \"idTopic\" = ?",[${'topicList_'.$i}]);
+            }
             if (sizeof($cur) == 0) {
                 \DB::table('match_info')->insert(
                 array('CompanyID' => ${'idCompany_'.$i},

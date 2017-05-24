@@ -32,7 +32,13 @@ class companyrepresentativeController extends Controller
         $topic5 = $request->topic5;
         $quantity5 = $request->quantity5;
 
+        $comRep = null;
+        if (env('DB_CONNECTION') == 'mysql') {
         $comRep = \DB::select("select * from companyrepresentative where CR_ID = ? ",[$userId]);
+        } else if (env('DB_CONNECTION') == 'pgsql') {
+        $comRep = \DB::select("select * from companyrepresentative where \"CR_ID\" = ? ",[$userId]);
+        }
+
         $comId = $comRep[0]->CompanyID; // 1 companyrepresentative - 1 company
 
         \DB::table('topic')
