@@ -116,7 +116,6 @@
           </ul>
         </li>
         
-        <li><a href="#">Chat</a></li>
       </ul>
       
       

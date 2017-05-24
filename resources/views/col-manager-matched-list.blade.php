@@ -6,7 +6,7 @@
     <title>College manager matched information</title>
 
     <link rel ="stylesheet" type="text/css" href ="{{ URL::asset('css/font-awesome.min.css')}}" />
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/col.manager-matched info/css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/col.manager-matched-info/css/styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap.min.css') }}">
     <script type="text/javascript" src="{{ URL::asset('js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
@@ -39,7 +39,7 @@
                <li class="">  
                   <a class ="action-menu-toggle" href="#">
                   <span class ="userbutton">
-                    <span class ="usertext">My name
+                    <span class ="usertext">College manager
                     </span>
                     <span class ="avatar">
                       <span class ="ava current">
@@ -104,9 +104,10 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="/collegeintershipmanager"><i class="fa fa-home" aria-hidden="true"></i> HOME<span class="sr-only">(current)</span></a></li>
 
-        <li><a href="#">Matched list</a></li>
-        <li><a href="#">Internship Assignment</a></li>
-        <li><a href="#">Statistics</a></li>
+        <li><a href="/collegeintershipmanager/duyet-topic-1">Censorship</a></li>
+        <li><a href="/collegeintershipmanager/matched-list">Matched list</a></li>
+        <li><a href="/collegeintershipmanager/schedule">Internship Assignment</a></li>
+        <li><a href="/collegeintershipmanager/statistic">Statistics</a></li>
       </ul>
         </li>
       
@@ -153,7 +154,7 @@
                     <input class="form-control" type="hidden" value="{{$item['speciality']}}" name="speciality_{{$i}}">
 
                     <tr>
-                      <td>{{$i}}</td>
+                      <td>{{$i+1}}</td>
                       <td>{{$item['studentName']}}</td>
                       <td>{{$item['studentNumber']}}</td>
                       <td>{{$item['company']}}</td>

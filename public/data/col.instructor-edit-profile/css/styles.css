@@ -84,8 +84,6 @@ head
     opacity: 1;
 }
 
-
-
 .header-main-menubar .navbar .navbar-nav li:hover{
 	background: #e7e7e7;
 }
@@ -134,6 +132,14 @@ head
 	margin-top: 20px;
 }
 
+.form-register .btn-file{
+	color: black;
+	background: white;
+	text-align: center;
+	font-size: 14px;
+	padding: 10px 10px;
+	margin-top: 0px;
+}
 .form-register .note{
 	color: red;
 }
@@ -151,7 +157,13 @@ head
 		margin-bottom: 10px;
 	}
 
-	
+	#topic1{
+		margin-bottom: 10px;
+	}
+
+	#topic2{
+		margin-bottom: 10px;
+	}
 
 	#instructor{
 		margin-bottom: 10px;

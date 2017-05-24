@@ -38,12 +38,12 @@
                <li class="">  
                   <a class ="action-menu-toggle" href="#">
                   <span class ="userbutton">
-                    <span class ="usertext">College Intership Manager
+                    <span class ="usertext">College Manager
                     </span>
                     <span class ="avatar">
                       <span class ="ava current">
 
-                          <img src="images\logo.png" alt="avatar"><i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                          <img src="{{ URL::asset('images/logo.png') }}" alt="avatar"><i class="fa fa-user-circle-o" aria-hidden="true"></i>
                       </span>
                     </span>
                   </span>
@@ -100,10 +100,10 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="/collegeintershipmanager"><i class="fa fa-home" aria-hidden="true"></i> HOME<span class="sr-only">(current)</span></a></li>
 
-        <li><a href="/collegeintershipmanager/duyet-topic-1">Censorship</a></li>
+         <li><a href="/collegeintershipmanager/duyet-topic-1">Censorship</a></li>
         <li><a href="/collegeintershipmanager/matched-list">Matched list</a></li>
-        <li><a href="#">Internship Assignment</a></li>
-        <li><a href="#">Statistics</a></li>
+        <li><a href="/collegeintershipmanager/schedule">Internship Assignment</a></li>
+        <li><a href="/collegeintershipmanager/statistic">Statistics</a></li>
       </ul>
 
         

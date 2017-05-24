@@ -132,6 +132,14 @@ head
 	margin-top: 20px;
 }
 
+.form-register .btn-file{
+	color: black;
+	background: white;
+	text-align: center;
+	font-size: 14px;
+	padding: 10px 10px;
+	margin-top: 0px;
+}
 .form-register .note{
 	color: red;
 }

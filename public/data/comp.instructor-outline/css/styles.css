@@ -121,10 +121,18 @@ head
 
 .form-register .btn{
 	margin-top: 30px;
-	margin-bottom: 50px;
 	color: #ffffff;
 	background: #B22222;
 	text-align: center;
+}
+
+.form-register .btn-file{
+	color: black;
+	background: white;
+	text-align: center;
+	font-size: 14px;
+	padding: 10px 10px;
+	margin-top: 0px;
 }
 
 .form-register .note{

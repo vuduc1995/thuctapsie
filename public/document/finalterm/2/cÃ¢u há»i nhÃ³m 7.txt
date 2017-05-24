@@ -1,0 +1,3 @@
+﻿Câu 1 : Theo như cách ném đá của nhóm thì viên đá chỉ được chỉnh theo thông số độ lớn lực mà không thể hiện được góc alpha là góc tạo bởi phương ném của viên đá với mặt phẳng ngang. Mà góc alpha đó là một trong những yếu tố quan trọng được thể hiện trong công thức vật lý của nhóm. Các bạn có giải thích gì về phần này. Nếu sai thì các bạn sẽ sửa như thế nào?
+
+Câu 2 : Theo demo của nhóm thì khi có một người dùng thoát ra khỏi ao sau khi trò chơi bắt đầu thì các người dùng khác cũng không biết về sự thoát ra của người dùng này và phần ao của người đó cũng không biến mất. Điều này khiến cho việc chơi sẽ mất đi tính thú vị và sẽ có trường hợp chỉ còn 1 người chơi nhưng lại không biết các người chơi khác đã thoát. Các bạn đề xuất xử lý trường hợp này như thế nào?

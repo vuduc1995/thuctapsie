@@ -7,7 +7,7 @@
     <title>Company Instructor Mark</title>
 
     <link rel ="stylesheet" type="text/css" href ="{{ URL::asset('css/font-awesome.min.css')}}" />
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/col.manager-matched info/css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/col.instructor-mark-stud-2/css/styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap.min.css') }}">
     <script type="text/javascript" src="{{ URL::asset('js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
@@ -41,12 +41,12 @@
                <li class="">  
                   <a class ="action-menu-toggle" href="#">
                   <span class ="userbutton">
-                    <span class ="usertext">My name
+                    <span class ="usertext">Company Instructor
                     </span>
                     <span class ="avatar">
                       <span class ="ava current">
 
-                          <img src="" alt="avatar"><i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                          <img src="{{ URL::asset('images/logo.png') }}" alt="avatar"><i class="fa fa-user-circle-o" aria-hidden="true"></i>
                       </span>
                     </span>
                   </span>
@@ -57,7 +57,7 @@
               <ul class="dropdown-menu hidemenu" aria-labelledby="dropdownMenu1">
                <li>
                   <a class ="menu-action" href="/collegeinstructor">
-                    <i class="fa fa-home" aria-hidden="/collegeinstructor"></i>
+                    <i class="fa fa-home" aria-hidden="true"></i>
                     <span class="action-text">Homepage</span>
                   </a>
                 </li>
@@ -75,6 +75,7 @@
                   <a class ="menu-action" href="/logout">
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                     <span class="action-text">Sign Out</span>
+                  </a>
                   </a>
                 </li>
               </ul>
@@ -104,17 +105,16 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#"><i class="fa fa-home" aria-hidden="true"></i> HOME<span class="sr-only">(current)</span></a></li>
+        <li class="active"><a href="/collegeinstructor"><i class="fa fa-home" aria-hidden="true"></i> HOME<span class="sr-only">(current)</span></a></li>
         
          <li class="intern dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Intern <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Mark</a></li>
+            <li><a href="/collegeinstructor/mark-1">Mark</a></li>
           </ul>
         </li>
 
         
-        <li><a href="#">Chat</a></li>
       </ul>
         </li>
 
@@ -145,7 +145,7 @@
         <h2>mark</h2>
 
           <div class="fillin">
-            <form class="form-horizontal">
+            <form class="form-horizontal" method="POST" action="/collegeinstructor/upMark" accept-charset="UTF-8" enctype="multipart/form-data">
               
                 <div class="form-group">
                 <p style="color: black; font-weight: bold; font-style: italic;" class="col-sm-5 col-sm-offset-3">1. Mid-term</p>
@@ -154,11 +154,10 @@
 
                 <div class="form-group">
                 <label class="col-sm-5 control-label">Report from Student:</label>
-                {{$student->name}}
                 
                 <div class="col-sm-5 col-sm-offset-1 ">
-                    <button type="preview" class="btn btn-default btn-topic">Preview</button>
-                    <button type="download" class="btn btn-default btn-topic">Download</button>
+                    <a href="{{ URL::asset($midReport) }}">Download
+                     </a>
                   </div>
               </div>
 
@@ -166,7 +165,9 @@
                 <label class="col-sm-5 control-label">Rate from Company Instructor:</label>
                 
                 <div class="col-sm-5 col-sm-offset-1 ">
+                  
                     <button type="preview" class="btn btn-default btn-topic">Preview</button>
+                   
                   </div>
               </div>
 
@@ -174,7 +175,7 @@
                 <label class="col-sm-5 control-label">Mid-term point:</label>
                 
                 <div class="col-sm-5 col-sm-offset-6 ">
-                <select name="Topic" >
+                <select name="Topic1" >
                         <option value="1">A</option>
                         <option value="2">B+</option>
                         <option value="3">B</option>
@@ -195,8 +196,8 @@
                 <label class="col-sm-5 control-label">Report from Student:</label>
                 
                 <div class="col-sm-5 col-sm-offset-1 ">
-                    <button type="preview" class="btn btn-default btn-topic">Preview</button>
-                    <button type="download" class="btn btn-default btn-topic">Download</button>
+                    <a href="{{ URL::asset($finalReport ) }}">Download
+                    </a>
                   </div>
               </div>
 
@@ -210,9 +211,9 @@
 
               <div class="form-group">
                 <label class="col-sm-5 control-label">Final point:</label>
-                
+                <input class="form-control hidden"  name ="id" value="{{$id}}">
                 <div class="col-sm-5 col-sm-offset-6 ">
-                <select name="Topic" >
+                <select name="Topic2" >
                         <option value="1">A</option>
                         <option value="2">B+</option>
                         <option value="3">B</option>

@@ -6,7 +6,7 @@
     <title>College Manager Home</title>
 
     <link rel ="stylesheet" type="text/css" href ="{{ URL::asset('css/font-awesome.min.css')}}" />
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/col.manager-duyet topic 1/css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/col.manager-duyet-topic-1/css/styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap.min.css') }}">
     <script type="text/javascript" src="{{ URL::asset('js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
@@ -40,7 +40,7 @@
                <li class="">  
                   <a class ="action-menu-toggle" href="#">
                   <span class ="userbutton">
-                    <span class ="usertext">My name
+                    <span class ="usertext">College Manager
                     </span>
                     <span class ="avatar">
                       <span class ="ava current">
@@ -55,14 +55,14 @@
 
               <ul class="dropdown-menu hidemenu" aria-labelledby="dropdownMenu1">
                <li>
-                  <a class ="menu-action" href="#">
+                  <a class ="menu-action" href="/collegeintershipmanager">
                     <i class="fa fa-home" aria-hidden="true"></i>
                     <span class="action-text">Homepage</span>
                   </a>
                 </li>
 
                 <li>
-                  <a class ="menu-action" href="#">
+                  <a class ="menu-action" href="/collegeintershipmanager/profile">
                     <i class="fa fa-user-md" aria-hidden="true"></i>
                     <span class="action-text">Profile</span>
                   </a>
@@ -103,11 +103,12 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#"><i class="fa fa-home" aria-hidden="true"></i> HOME<span class="sr-only">(current)</span></a></li>
+        <li class="active"><a href="/collegeintershipmanager"><i class="fa fa-home" aria-hidden="true"></i> HOME<span class="sr-only">(current)</span></a></li>
         
-        <li><a href="#">Matched list</a></li>
+         <li><a href="/collegeintershipmanager/duyet-topic-1">Censorship</a></li>
+        <li><a href="/collegeintershipmanager/matched-list">Matched list</a></li>
         <li><a href="#">Internship Assignment</a></li>
-        <li><a href="#">Statistics</a></li>
+        <li><a href="/collegeintershipmanager/statistic">Statistics</a></li>
       </ul>
         </li>
 

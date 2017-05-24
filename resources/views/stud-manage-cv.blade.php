@@ -1,3 +1,18 @@
+@if (!isset($users))
+  @php
+    $users = new StdClass();
+    $users->fullname = '';
+    $users->class = '';
+    $users->gender = '';
+    $users->stdid = '';
+    $users->email = '';
+    $users->foreignLanguage = '';
+    $users->skills = '';
+    $users->experience = '';
+    $users->address = '';
+    $users->phone= '';
+  @endphp
+@endif
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -113,7 +128,7 @@
             <li><a href="/student/report">Report</a></li>
             <li><a href="/student/feedback">Feedback</a></li>
             <li><a href="/student/status">Status</a></li>
-            <li><a href="#">Mark</a></li>
+            <li><a href="/student/mark">Mark</a></li>
           </ul>
         </li>
 
@@ -148,12 +163,12 @@
               <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">Fullname</label>
                 <div class="col-sm-4">
-                  <input class="form-control" id="name" placeholder="Fullname" name="fullname">
+                  <input class="form-control" id="name" placeholder="Fullname" name="fullname" @if (isset($users)) value="{{$users->fullname}}" @endif>
                 </div>
 
                 <label for="class" class="col-sm-2 control-label">Class</label>
                 <div class="col-sm-3">
-                  <input class="form-control" id="class" placeholder="Class" name="class">
+                  <input class="form-control" id="class" placeholder="Class" name="class" @if (isset($users)) value="{{$users->class}}" @endif>
                 </div>
               </div>
 
@@ -162,10 +177,10 @@
                   <div class="radio radio-danger">
                     <label style="font-weight: bold"> Gender  </label>
                     <label style="margin-left: 40px">
-                      <input type="radio" name="survey" value="male"> Male
+                      <input type="radio" name="survey" value="male" @if (isset($users)) {{$users->gender == 'male' ? "checked=checked" : ''}} @endif> Male
                     </label>
                     <label style="margin-left: 40px">
-                      <input type="radio" name="survey" value="female"> Female
+                      <input type="radio" name="survey" value="female" @if (isset($users)) {{$users->gender == 'female' ? "checked=checked" : ''}} @endif> Female
                     </label>
                   </div>
                 </div>
@@ -173,9 +188,9 @@
 
   
               <div class="form-group">
-                <label for="idnumber" class="col-sm-2 control-label">Student's number</label>
+                <label for="idnumber" class="col-sm-2 control-label" >Student's number</label>
                 <div class="col-sm-3">
-                  <input type="text" class="form-control" id="idnumber" placeholder="Student's number" name="stdnumber">
+                  <input type="text" class="form-control" id="idnumber" placeholder="Student's number" name="stdnumber" @if (isset($users))value="{{$users->stdid}}" @endif>
                 </div>
               </div>
 
@@ -183,40 +198,40 @@
               <div class="form-group">
                 <label for="address" class="col-sm-2 control-label">Address</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" id="address" placeholder="Address" name="address">
+                  <input type="text" class="form-control" id="address" placeholder="Address" name="address" @if (isset($users)) value="{{$users->address}}" @endif>
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="phonenumber" class="col-sm-2 control-label">Phone</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" id="phonenumber" placeholder="phonenumber" name="phonenumber">
+                  <input type="text" class="form-control" id="phonenumber" placeholder="phonenumber" name="phonenumber" @if (isset($users)) value="{{$users->phone}}" @endif>
                 </div>
 
                 <label for="email" class="col-sm-2 control-label">Email</label>
                 <div class="col-sm-3">
-                  <input type="email" class="form-control" id="email" placeholder="Email" name="email">
+                  <input type="email" class="form-control" id="email" placeholder="Email" name="email" @if (isset($users)) value="{{$users->email}}" @endif>
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="language" class="col-sm-2 control-label">Foreign Language</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" id="type" placeholder="Certification" name="certification">
+                  <input type="text" class="form-control" id="type" placeholder="Certification" name="certification" @if (isset($users)) value="{{$users->foreignLanguage}}" @endif>
                 </div>
                  </div>
 
                  <div class="form-group">
                   <label for="skills" class="col-sm-2 control-label">Skills</label>
                   <div class="col-sm-9">
-                  <textarea class="form-control" col="7" rows="7" name="skills"></textarea>
+                  <textarea class="form-control" col="7" rows="7" name="skills" >@if (isset($users)) {{$users->skills}} @endif</textarea>
                   </div>
                  </div>
 
                  <div class="form-group">
                   <label for="learning" class="col-sm-2 control-label">Experience</label>
                   <div class="col-sm-9">
-                  <textarea class="form-control" col="7" rows="7" name="experience"></textarea>
+                  <textarea class="form-control" col="7" rows="7" name="experience" >@if (isset($users))  {{$users->experience}} @endif</textarea>
                   </div>
                  </div>
 
@@ -249,7 +264,7 @@
             //whatever you wanna do after the form is successfully submitted
         }
     }).done(function( msg ) {
-alert( "Data Saved: " + msg );
+    // alert( "Data Saved: " + msg );
     if(msg==1){
       alert( "Successfully" );
     }else{

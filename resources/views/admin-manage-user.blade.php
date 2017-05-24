@@ -6,11 +6,22 @@
     <title>Admin manage user</title>
 
     <link rel ="stylesheet" type="text/css" href ="{{ URL::asset('css/font-awesome.min.css')}}" />
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/admin-manage-user`/css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/admin-manage-user/css/styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap.min.css') }}">
     <script type="text/javascript" src="{{ URL::asset('js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
+    <style type="text/css">
+    input {
 
+        border: none;
+        display: inline;
+        font-family: inherit;
+        font-size: inherit;
+        padding: none;
+        width: inherit;
+        background-color: transparent;
+      }
+    </style>
 </head>
 
 <body>
@@ -39,7 +50,7 @@
                <li class="">  
                   <a class ="action-menu-toggle" href="#">
                   <span class ="userbutton">
-                    <span class ="usertext">My name
+                    <span class ="usertext">Admin
                     </span>
                     <span class ="avatar">
                       <span class ="ava current">
@@ -54,7 +65,7 @@
 
               <ul class="dropdown-menu hidemenu" aria-labelledby="dropdownMenu1">
                <li>
-                  <a class ="menu-action" href="#">
+                  <a class ="menu-action" href="/admin">
                     <i class="fa fa-home" aria-hidden="true"></i>
                     <span class="action-text">Homepage</span>
                   </a>
@@ -70,7 +81,7 @@
                 <li role="separator" class="divider"></li>
 
                 <li class=" sign-out">
-                  <a class ="menu-action" href="#">
+                  <a class ="menu-action" href="/logout">
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                     <span class="action-text">Sign Out</span>
                   </a>
@@ -102,11 +113,11 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#"><i class="fa fa-home" aria-hidden="true"></i> HOME<span class="sr-only">(current)</span></a></li>
+        <li class="active"><a href="/admin"><i class="fa fa-home" aria-hidden="true"></i> HOME<span class="sr-only">(current)</span></a></li>
 
-        <li><a href="#">Manage User</a></li>
-        <li><a href="#">Manage Mark</a></li>
-        
+        <li><a href="/admin/manager-user">Manage User</a></li>
+        <li><a href="/admin/manager-mark">Manage Mark</a></li>
+        <li><a href="/admin/auto-match">Auto Match Info</a></li>
           </ul>
         </li>
       
@@ -131,48 +142,69 @@
 <div class="form-register">
   <div class="container-fluid">
       
-        <h2>manage user</h2>
+        <h2>Manage user</h2>
 
+        <form id='myForm'>
                 <div class="form-group">
                   <div class="text-right">
-                    <button type="add" class="btn btn-default">Add</button><button type="edit" class="btn btn-default">Edit</button><button type="delete" class="btn btn-default">Delete</button>
+                   
                   </div>
 
-                  <table id="t01">
+                  <table id="table"  >
                     <tr>
-                      <th>iduser</th>
                       <th>Email</th> 
                       <th>Password</th>
                       <th>Role</th>
+                      <th> <span class="table-add glyphicon glyphicon-plus" style="color:white"></span></th>
                     </tr>
 
-                    <tr>
-                      <td>2</td>
-                      <td>student@gmail.com</td>
-                      <td>123456</td>
-                      <td>2</td>
-                    </tr>
+                    @foreach($users as $i=>$item)
+
 
                     <tr>
-                      <td>3</td>
-                      <td>collegeinstructor@gmail.com</td>
-                      <td>123456</td>
-                      <td>3</td>
+                      <input class="form-control" type="hidden" value="{{$item['iduser']}}" name="iduser_{{$i}}">
+                      <td>
+                      <input type="email" name="email_{{$i}}" size="35" value="{{$item['email']}}">
+                      </td>
+                      <td>
+                      <input type="text" name="password_{{$i}}"  value="{{$item['password']}}">
+                      </td>
+                      <td>
+                      <input type="number" name="role_{{$i}}"  value="{{$item['role']}}">
+                      </td>
+                      <td>
+                      <span class="table-remove glyphicon glyphicon-remove"></span>
+                    </td>
+
                     </tr>
-  
+
+                  @endforeach
+
+                    
+                      <tr class="hide">
+                      <input class="form-control" type="hidden" value="-1" name="iduser">
+                       <td> Email</td>
+                      <td> Password</td>
+                      <td>1</td>
+                      <td>
+                      <span class="table-remove glyphicon glyphicon-remove"></span>
+                    </td>
+                    </tr>
                   </table>
-             
-
+             <div class="text-center"> 
+                   <button id="export-btn" class="btn btn-primary" style="text-align:center">Save Data</button>
+                     <p id="export"></p>
+                     </div>
                 </div>
-              </form>
 
-     
+      </form>
       </div> 
       <!-- end-of-fillin -->
 
       
     </div>
 </div>
+
 <!-- end-of-form-register -->
 
 <footer id="footer">    
@@ -200,4 +232,46 @@
   </div>
 </footer>
 <!--E.O.Footer-->
+<script type="text/javascript">
+  var $TABLE = $('#table');
+var $BTN = $('#export-btn');
+var $EXPORT = $('#export');
+
+$('.table-add').click(function () {
+  window.location="/admin/add-user";
+  
+});
+
+$('.table-remove').click(function () {
+
+  $(this).parents('tr').detach();
+});
+
+
+// A few jQuery helpers for exporting only
+jQuery.fn.pop = [].pop;
+jQuery.fn.shift = [].shift;
+
+
+</script>
+<script type="text/javascript">
+      $('#myForm').submit(function(e){
+    e.preventDefault();
+    $.ajax({
+        url:'/admin/upUser',
+        type:'post',
+        data:$('#myForm').serialize(),
+        success:function(){
+            //whatever you wanna do after the form is successfully submitted
+        }
+    }).done(function( msg ) {
+    // alert( "Data Saved: " + msg );
+    if(msg==1){
+      alert( "Successfully" );
+    }else{
+      alert( "Error!" );
+    }
+  });
+});
+    </script>
 </body>

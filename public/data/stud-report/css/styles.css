@@ -84,13 +84,6 @@ head
     opacity: 1;
 }
 
-.banner{
-	background-image: url(../images/sie%201.png);
-	height: 568px;
-	width: 913px;
-	margin-top: -20px;
-}
-
 .header-main-menubar .navbar .navbar-nav li:hover{
 	background: #e7e7e7;
 }
@@ -114,29 +107,74 @@ head
 
 .form-register h2{
 	text-align: center;
-	font-weight: bold;
-	font-size: 32px;
 	color: #424242;
+	font-weight: bold;
 	text-transform: uppercase;
-	margin-bottom: 30px;
-	margin-top: 50px;
+	padding-bottom: 30px;
 }
 
 .form-register label{
 	font-size: 14px;
 }
 
-.form-register .btn{
-	margin-top: 30px;
-	margin-bottom: 50px;
+/*.form-register .btn{
 	color: #ffffff;
 	background: #B22222;
 	text-align: center;
+}*/
+
+.form-register .btn{
+	color: #ffffff;
+	background: #B22222;
+	padding: 10px 100px;
+	text-align: center;
+	font-size: 18px;
+	margin-top: 20px;
+}
+
+.form-register .btn-file{
+	color: black;
+	background: white;
+	text-align: center;
+	font-size: 14px;
+	padding: 10px 10px;
+	margin-top: 0px;
 }
 
 .form-register .note{
 	color: red;
 }
+
+@media only screen and (max-width: 768px){
+	#name{
+		margin-bottom: 10px;
+	}
+
+	#phonenumber{
+		margin-bottom: 10px;
+	}
+
+	#type{
+		margin-bottom: 10px;
+	}
+
+	#topic1{
+		margin-bottom: 10px;
+	}
+
+	#topic2{
+		margin-bottom: 10px;
+	}
+
+	#instructor{
+		margin-bottom: 10px;
+	}
+
+	#ins-phonenumber{
+		margin-bottom: 10px;
+	}
+}
+
 
 footer{
 	background-color: #B22222;

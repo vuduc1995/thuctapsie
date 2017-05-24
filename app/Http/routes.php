@@ -17,15 +17,6 @@ Route::get('/', function () {
 	$role = \Session::get('loginRole');
 	$userid = \Session::get('loginId');
 
-  Log::info('teeeeeet');
-  Log::info(env('DB_CONNECTION'));
-
-  if (env('DB_CONNECTION') == 'mysql') {
-    Log::info('T mysql');
-  } else if (env('DB_CONNECTION') == 'pgsql') {
-    Log::info('T pgsqlfff');
-  }
-
 	if(is_null($role)){
 		return view('home');	
 	}else{
@@ -53,40 +44,207 @@ Route::get('/logout', function () {
 });
 
 Route::post('/user/login',array('uses'=>'LogInController@checkLogin'));
+
+Route::get('/student/CV',array('uses'=>'StudentController@showCvStudent'));
+Route::get('/student/edit-profile',array('uses'=>'StudentController@showProfileStudent'));
+Route::get('/student/registration',array('uses'=>'StudentController@showRegistStudent'));
+Route::get('/student/mark',array('uses'=>'StudentController@showMarkStudent'));
+Route::get('/student/status',array('uses'=>'StudentController@showStatusStudent'));
+Route::get('/student/topic',array('uses'=>'StudentController@showTopicList'));
+Route::get('/student/report',array('uses'=>'StudentController@showReport'));
+
 Route::post('/student/registration/up',array('uses'=>'StudentController@registration'));
 Route::post('/student/upCV',array('uses'=>'StudentController@upCV'));
 Route::post('/student/upEditProfile',array('uses'=>'StudentController@editProfile'));
 Route::post('/student/upFeedback',array('uses'=>'StudentController@feedback'));
-Route::post('/comp-representative/Registration/up',array('uses'=>'companyrepresentativeController@registration'));
-Route::post('/companyrepresentative/topic-list',array('uses'=>'companyrepresentativeController@updateTopics'));
-Route::post('/collegeintershipmanager/duyet-topic-2/accept',array('uses'=>'ColManagerController@accept'));
-Route::post('/collegeintershipmanager/duyet-topic-2/decline',array('uses'=>'ColManagerController@decline'));
-Route::post('/collegeintershipmanager/matched-list',array('uses'=>'ColManagerController@updateMatchedList'));
-Route::post('/companyinstructor/mark-2',array('uses'=>'CompanyInstructorController@updateReport'));
+Route::post('/student/upReport',array('uses'=>'StudentController@updateReport'));
+
+Route::get('/companyrepresentative/topic-list',array('uses'=>'companyrepresentativeController@showTopic'));
+Route::get('/companyrepresentative/Registration',array('uses'=>'companyrepresentativeController@showRegistration'));
+Route::post('/companyrepresentative/Registration/up',array('uses'=>'companyrepresentativeController@upRegistration'));
+Route::post('/companyrepresentative/topic/up',array('uses'=>'companyrepresentativeController@upTopic'));
+
+Route::get('/collegeinstructor/edit-profile',array('uses'=>'collegeinstructorController@showProfileCollegeinstructor'));
+Route::post('/collegeinstructor/upEditProfile',array('uses'=>'collegeinstructorController@editProfile'));
+Route::post('/collegeinstructor/upMark',array('uses'=>'collegeinstructorController@upMark'));
+
+Route::get('/collegeintershipmanager/edit-profile',array('uses'=>'collegeintershipmanagerController@showProfileCollegeinstructor'));
+Route::post('/collegeintershipmanager/upEditProfile',array('uses'=>'collegeintershipmanagerController@editProfile'));
+Route::post('/collegeintershipmanager/upSchedule',array('uses'=>'collegeintershipmanagerController@upSchedule'));
+Route::get('/collegeintershipmanager/statistic',array('uses'=>'collegeintershipmanagerController@showStatistic'));
+Route::get('/collegeintershipmanager/schedule',array('uses'=>'collegeintershipmanagerController@showSchedule'));
+
+
+
+Route::get('/companyrepresentative/edit-profile',array('uses'=>'companyrepresentativeController@showProfileCompanyrepresentative'));
+Route::post('/companyrepresentative/upEditProfile',array('uses'=>'companyrepresentativeController@editProfile'));
+
+Route::post('/admin/upAddUser',array('uses'=>'adminController@upAddUser'));
+Route::post('/admin/upUser',array('uses'=>'adminController@upUser'));
+Route::post('/admin/upMark',array('uses'=>'adminController@upMark'));
+Route::get('/admin/manager-mark',array('uses'=>'adminController@showMark'));
+Route::get('/admin/manager-user',array('uses'=>'adminController@showUser'));
+Route::get('/companyinstructor/edit-profile',array('uses'=>'companyinstructorController@showProfileCompanyinstructor'));
+Route::post('/companyinstructor/upEditProfile',array('uses'=>'companyinstructorController@editProfile'));
+Route::post('/companyinstructor/mark',array('uses'=>'companyinstructorController@mark'));
+Route::post('/companyinstructor/upOutline',array('uses'=>'companyinstructorController@upOutline'));
+Route::get('/companyinstructor/outline',array('uses'=>'companyinstructorController@showOutline'));
+Route::post('/companyinstructor/upRate',array('uses'=>'companyinstructorController@upRate'));
+Route::post('/companyinstructor/upTimeSheet',array('uses'=>'companyinstructorController@upTimeSheet'));
 
 Route::get('/student', function () {
    return view('stud-home');
 });
 
+Route::get('/admin/auto',array('uses'=>'adminController@matchInfo'));
+
 Route::get('/admin', function () {
    return view('admin-home');
 });
 
-Route::get('/admin/manager-user', function () {
-   return view('admin-manage-user');
+Route::get('/admin/add-user', function () {
+   return view('admin-add-user');
+});
+
+// Route::get('/admin/manager-mark', function () {
+//    return view('admin-manage-mark');
+// });
+
+Route::get('/admin/auto-match', function () {
+   return view('admin-auto');
 });
 
 Route::get('/collegeinstructor', function () {
    return view('col-instructor-home');
 });
 
-Route::get('/collegeinstructor/edit-profile', function () {
-   return view('col-instructor-profile');
-});
+
+Route::get('/collegeintershipmanager/matchInfo',array('uses'=>'collegeintershipmanagerController@showMatchInfo'));
+
 
 Route::get('/collegeintershipmanager', function () {
    return view('col-manager-home');
 });
+
+
+
+
+Route::get('/companyrepresentative', function () {
+   return view('comp-representative-home');
+});
+
+
+Route::get('/companyinstructor', function () {
+   return view('comp-instructor-home');
+});
+
+Route::get('/companyinstructor/mark', function () {
+   return view('comp-instructor-mark');
+});
+
+Route::get('/companyinstructor/timesheet', function () {
+   return view('comp-instructor-timesheet');
+});
+
+
+
+Route::get('/companyinstructor/rate', function () {
+   return view('comp-instructor-rate');
+});
+
+
+
+Route::get('/student/feedback', function () {
+   return view('stud-feedback');
+});
+
+Route::get('/collegeinstructor/mark-1', function () {
+ $students = \DB::select("select * from student");
+ $list = array();
+
+ foreach ($students as $student) {
+  $list[] = array (
+    'id'=>$student->Student_ID,
+    'name'=>$student->name,
+    'studnumber'=>$student->studid,
+    'class'=>$student->class) ;
+  } 
+  return view('col-instructor-mark-1', ['students' =>$list]);
+});
+
+Route::get('/companyinstructor/mark-1', function () {
+ $students = \DB::select("select * from student");
+ $list = array();
+
+ foreach ($students as $student) {
+  $list[] = array (
+    'id'=>$student->Student_ID,
+    'name'=>$student->name,
+    'studnumber'=>$student->studid,
+    'class'=>$student->class) ;
+  } 
+  return view('comp-instructor-mark-1', ['students' =>$list]);
+});
+
+Route::get('/companyinstructor/timesheet-1', function () {
+ $students = \DB::select("select * from student");
+ $list = array();
+
+ foreach ($students as $student) {
+  $list[] = array (
+    'id'=>$student->Student_ID,
+    'name'=>$student->name,
+    'studnumber'=>$student->studid,
+    'class'=>$student->class) ;
+  } 
+  return view('comp-instructor-sheet-1', ['students' =>$list]);
+});
+
+Route::get('/companyinstructor/rate-1', function () {
+ $students = \DB::select("select * from student");
+ $list = array();
+
+ foreach ($students as $student) {
+  $list[] = array (
+    'id'=>$student->Student_ID,
+    'name'=>$student->name,
+    'studnumber'=>$student->studid,
+    'class'=>$student->class) ;
+  } 
+  return view('comp-instructor-rate-1', ['students' =>$list]);
+});
+
+
+Route::get('/collegeinstructor/mark-2/{id}',array('uses'=>'collegeinstructorController@showMark'));
+Route::get('/companyinstructor/mark-2/{id}',array('uses'=>'companyinstructorController@showMark'));
+Route::get('/companyinstructor/rate-2/{id}',array('uses'=>'companyinstructorController@showRate'));
+Route::get('/companyinstructor/sheet-2/{id}',array('uses'=>'companyinstructorController@showSheet'));
+
+
+Route::post('/collegeintershipmanager/duyet-topic-2/accept',array('uses'=>'collegeintershipmanagerController@accept'));
+Route::post('/collegeintershipmanager/duyet-topic-2/decline',array('uses'=>'collegeintershipmanagerController@decline'));
+
+Route::get('/collegeintershipmanager/duyet-topic-1', function () {
+  $companies = \DB::select("select * from company");
+  $list = array();
+
+  foreach ($companies as $company) {
+    $list[] = array(
+      'id'=>$company->idCompany,
+      'name'=>$company->Name);
+  }
+
+  return view('col-manager-duyet-topic-1', ['companies' => $list]);
+});
+
+Route::get('/collegeintershipmanager/duyet-topic-2/{id}', function ($id) {
+  $company = \DB::table('company')->where('idCompany',$id )->first();
+  $represent = \DB::table('companyrepresentative')->where('CompanyID',$id )->first();
+  $topics = \DB::select("select * from topic t inner join speciality s on t.SpecialityID = s.idSpeciality where t.CompanyID = ?", [$id]);
+  return view('col-manager-duyet-topic-2', ['company' => $company, 'represent' => $represent, 'topics' => $topics]);
+});
+
+Route::post('/collegeintershipmanager/matched-list',array('uses'=>'collegeintershipmanagerController@updateMatchedList'));
 
 Route::get('/collegeintershipmanager/matched-list', function () {
   $students = \DB::select("select * from user where role = 2");
@@ -94,30 +252,13 @@ Route::get('/collegeintershipmanager/matched-list', function () {
   $test = array();
 
 
-//UPDATE `db_sie4`.`aspiration` SET `speciality1`='PHP' WHERE `idAspiration`='9';
 
 
-//  foreach ($students as $student) {
-    // map spe 1
-    $studWithSpe1List = null;
-
-  if (env('DB_CONNECTION') == 'mysql') {
-    \DB::select("select u.iduser,st.name,st.studid,a.speciality1 from user u inner join student st on st.Student_ID = u.iduser inner join aspiration a on u.iduser = a.StudenID inner join speciality s on (a.speciality1 = s.name or a.speciality1 = s.idSpeciality)");
-  } else if (env('DB_CONNECTION') == 'pgsql') {
-    \DB::select("select u.\"iduser\",st.\"name\",st.\"studid\",a.\"speciality1\" from \"user\" u inner join \"student\" st on st.\"Student_ID\" = u.\"iduser\" inner join \"aspiration\" a on u.\"iduser\" = a.\"StudenID\" inner join speciality s on (a.speciality1 = s.name or a.speciality1 = s.idSpeciality)");
-  }
-
-
+    $studWithSpe1List = \DB::select("select u.iduser,st.name,st.studid,a.speciality1 from user u inner join student st on st.Student_ID = u.iduser inner join aspiration a on u.iduser = a.StudenID inner join speciality s on (a.speciality1 = s.name or a.speciality1 = s.idSpeciality)");
 
     foreach ($studWithSpe1List as $studWithSpe1) {
-      $compList = null;
-    if (env('DB_CONNECTION') == 'mysql') {
       $compList = \DB::select("select  t.idTopic,c.Name,c.idCompany,s.idSpeciality,s.name,t.content from topic t inner join company c on t.CompanyID = c.idCompany
 inner join speciality s on t.SpecialityID = s.idSpeciality where s.name = ? or s.idSpeciality = ?", [$studWithSpe1->speciality1, $studWithSpe1->speciality1]);
-    } else if (env('DB_CONNECTION') == 'pgsql') {
-      $compList = \DB::select("select  t.\"idTopic\",c.\"Name\",c.\"idCompany\",s.\"idSpeciality\",s.name,t.content from topic t inner join company c on t.\"CompanyID\" = c.\"idCompany\"
-inner join speciality s on t.\"SpecialityID\" = s.\"idSpeciality\" where s.name = ? or s.\"idSpeciality\" = ?", [$studWithSpe1->speciality1, $studWithSpe1->speciality1]);
-    }
 
       $t = $studWithSpe1->speciality1;
       Log::info('test '.$t);
@@ -162,211 +303,3 @@ inner join speciality s on t.\"SpecialityID\" = s.\"idSpeciality\" where s.name 
 
   return view('col-manager-matched-list', ['list' => $test]);
 });
-
-Route::get('/collegeintershipmanager/edit-profile', function () {
-   return view('col-manager-profile');
-});
-
-Route::get('/collegeintershipmanager/duyet-topic-1', function () {
-  $companies = \DB::select("select * from company");
-  $list = array();
-
-  foreach ($companies as $company) {
-    $list[] = array(
-      'id'=>$company->idCompany,
-      'name'=>$company->Name);
-  }
-
-  return view('col-manager-duyet-topic-1', ['companies' => $list]);
-});
-
-Route::get('/collegeintershipmanager/duyet-topic-2/{id}', function ($id) {
-  $company = \DB::table('company')->where('idCompany',$id )->first();
-  $represent = \DB::table('companyrepresentative')->where('CompanyID',$id )->first();
-  $topics = null;
-  if (env('DB_CONNECTION') == 'mysql') {
-  $topics = \DB::select("select * from topic t inner join speciality s on t.SpecialityID = s.idSpeciality where t.CompanyID = ?", [$id]);
-  } else if (env('DB_CONNECTION') == 'pgsql') {
-  $topics = \DB::select("select * from topic t inner join speciality s on t.\"SpecialityID\" = s.\"idSpeciality\" where t.\"CompanyID\" = ?", [$id]);
-  }
-
-
-  return view('col-manager-duyet-topic-2', ['company' => $company, 'represent' => $represent, 'topics' => $topics]);
-});
-
-Route::get('/collegeinstructor/mark-1', function () {
- $students = \DB::select("select * from student");
- $list = array();
-
- foreach ($students as $student) {
-  $list[] = array (
-    'id'=>$student->id,
-    'name'=>$student->name,
-    'studnumber'=>$student->studid,
-    'class'=>$student->class) ;
-    # code...
-  } 
-  return view('col-instructor-mark-1', ['students' =>$list]);
-});
-
-Route::get('/collegeinstructor/mark-2/{id}', function ($id) {
-  $student = \DB::table('student')->where('id',$id )->first();
-  // $report = \DB::table('report')->where('idReport',$id )->first();
-  $reports = null;
-  if (env('DB_CONNECTION') == 'mysql') {
-  $reports = \DB::select("select * from report r inner join student s on r.idReport = s.Student_ID where r.idReport = ?", [$id]);
-  } else if (env('DB_CONNECTION') == 'pgsql') {
-  $reports = \DB::select("select * from report r inner join student s on r.\"idReport\" = s.\"Student_ID\" where r.\"idReport\" = ?", [$id]);
-  }
-  
-  return view('col-instructor-mark-2', ['student' => $student, 'report'=> $reports ]);
-   // ['company' => $company, 'represent' => $represent, 'topics' => $topics]
-    
-});
-
-Route::get('/companyrepresentative', function () {
-   return view('comp-representative-home');
-});
-
-Route::get('/companyrepresentative/topic-list', function () {
-  $userId = \Session::get('loginId');
-  $comRep = null;
-
-  if (env('DB_CONNECTION') == 'mysql') {
-    $comRep = \DB::select("select * from companyrepresentative where CR_ID = ? ",[$userId]);
-  } else if (env('DB_CONNECTION') == 'pgsql') {
-    $comRep = \DB::select("select * from companyrepresentative where \"CR_ID\" = ? ",[$userId]);
-  }
-
-
-
-  $comId = $comRep[0]->CompanyID;
-  $topics = null;
-
-  if (env('DB_CONNECTION') == 'mysql') {
-  $topics = \DB::select("select * from topic where CompanyID = ? ",[$comId]);
-  } else if (env('DB_CONNECTION') == 'pgsql') {
-  $topics = \DB::select("select * from topic where \"CompanyID\" = ? ",[$comId]);
-  }
-
-
-  $speList1 = array();
-  foreach($topics as $topic) {
-    $t = $topic->content;
-
-    $speId = $topic->SpecialityID;
-    $spe = null;
-    if (env('DB_CONNECTION') == 'mysql') {
-    $spe = \DB::select("select * from speciality where idSpeciality = ? ",[$speId]);
-    } else if (env('DB_CONNECTION') == 'pgsql') {
-    $spe = \DB::select("select * from speciality where \"idSpeciality\" = ? ",[$speId]);
-    }
-    $name = $spe[0]->name;
-
-    $speList1[0] = $name;
-  }
-
-  // return  view('comp-representative-publish-topic-list',[
-  //   'iduser' => $userId,
-  //   'address' => $item[0]->address,
-  //   'description' => $item[0]->description,
-  //   'name' => $item[0]->name,
-  //   'birthday' => $item[0]->birthday,
-  //   'gender' => $item[0]->gender,
-  //   'phone' => $item[0]->phone]);
-  return view('comp-representative-publish-topic-list'
-    // , ['speList1' => $speList1] 
-    );
-});
-
-Route::get('/companyrepresentative/edit-profile', function () {
-   return view('comp-representative-profile');
-});
-
-Route::get('/companyrepresentative/Registration', function () {
-   return view('comp-representative-regis');
-});
-
-Route::get('/companyinstructor/mark-1', function () {
- $students = \DB::select("select * from student");
- $list = array();
-
- foreach ($students as $student) {
-  $list[] = array (
-    'id'=>$student->id,
-    'name'=>$student->name,
-    'studnumber'=>$student->studid,
-    'class'=>$student->class) ;
-    # code...
-  } 
-  return view('comp-instructor-mark-1', ['students' =>$list]);
-});
-
-Route::get('/companyinstructor/mark-2/{id}', function ($id) {
-  $student = \DB::table('student')->where('id',$id )->first();
-  // $report = \DB::table('report')->where('idReport',$id )->first();
-  // $reports = \DB::select("select * from report r inner join student s on r.idReport = s.Student_ID where r.idReport = ?", [$id]);
-
-  $report = \DB::table('reportdetail')->where('StudentID',$id )->first();
-
-  return view('comp-instructor-mark-2', ['studentId' => $id, 'student'=>$student, 'report' => $report]);
-});
-
-Route::get('/companyinstructor', function () {
-   return view('comp-instructor-home');
-});
-
-Route::get('/companyinstructor/timesheet', function () {
-   return view('comp-instructor-timesheet');
-});
-
-Route::get('/companyinstructor/outline', function () {
-   return view('comp-instructor-outline');
-});
-
-Route::get('/companyinstructor/rate', function () {
-   return view('comp-instructor-rate');
-});
-
-
-Route::get('/companyinstructor/edit-profile', function () {
-   return view('comp-instructor-profile');
-});
-
-Route::get('/student/CV', function () {
-   return view('stud-manage-cv');
-});
-
-Route::get('/student/edit-profile', function () {
-   return view('stud-home-profile');
-});
-
-Route::get('/student/registration', function () {
-   return view('stud-regist');
-});
-
-Route::get('/student/report', function () {
-   return view('stud-report');
-});
-
-Route::get('/student/feedback', function () {
-   return view('stud-feedback');
-});
-
-Route::get('/student/topic', function () {
-  $userId = \Session::get('loginId');
-
-  $topics = null;
-  if (env('DB_CONNECTION') == 'mysql') {
-  $topics = \DB::select("select * from topic t inner join company c on t.CompanyID = c.idCompany inner join speciality s on t.SpecialityID = s.idSpeciality");
-  } else if (env('DB_CONNECTION') == 'pgsql') {
-  $topics = \DB::select("select * from topic t inner join company c on t.\"CompanyID\" = c.\"idCompany\" inner join speciality s on t.\"SpecialityID\" = s.\"idSpeciality\"");
-  }
-
-
-  return view('stud-view topic', ['topics' => $topics]);
-});
-
-
-Route::get('/uploadfile','UploadFileController@index');
-Route::post('/uploadfile','UploadFileController@showUploadFile');

@@ -1,3 +1,15 @@
+@if (!isset($users))
+  @php
+   $dateDeadline = "";
+  @endphp
+ @else  
+   @php
+    $max = $deadline->numberLine;
+    $dateDeadline = new DateTime($deadline->time);
+    $dateDeadline = date_format($dateDeadline, 'g:ia \o\n l jS F Y');
+   @endphp
+@endif
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +18,7 @@
     <title>Company Representative Topic List</title>
 
     <link rel ="stylesheet" type="text/css" href ="{{ URL::asset('css/font-awesome.min.css')}}" />
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/comp.representative-publish topic list/css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/comp.representative-publish-topic-list/css/styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap.min.css') }}">
     <script type="text/javascript" src="{{ URL::asset('js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
@@ -22,7 +34,7 @@
       <div class="container-fluid">
         <div class="container row">
           <div class="col-sm-2">
-            <div id="logo"><img src="{{ URL::asset('images/logo60nambk.png')}}" width="165" height="77" alt="Klass">
+            <div id="logo"><img src="{{ URL::asset('images/logo60nambk.png') }}" width="165" height="77" alt="Klass">
             </div>
             
             
@@ -39,7 +51,7 @@
                <li class="">  
                   <a class ="action-menu-toggle" href="#">
                   <span class ="userbutton">
-                    <span class ="usertext">My name
+                    <span class ="usertext">Company Representative
                     </span>
                     <span class ="avatar">
                       <span class ="ava current">
@@ -102,7 +114,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#"><i class="fa fa-home" aria-hidden="true"></i> HOME<span class="sr-only">(current)</span></a></li>
+        <li class="active"><a href="/companyrepresentative"><i class="fa fa-home" aria-hidden="true"></i> HOME<span class="sr-only">(current)</span></a></li>
         
          <li class="dropdown" id="formcv">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Form <span class="caret"></span></a>
@@ -116,7 +128,7 @@
         <li class="intern dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Intern <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Topic list</a></li>
+            <li><a href="/companyrepresentative/topic-list">Topic list</a></li>
 
         
       </ul>
@@ -142,14 +154,10 @@
 <div class="form-register">
   <div class="container-fluid">
       
-      @if (!empty($compId))
-        <h2>topic list {{$compId}}</h2>
-      @else
         <h2>topic list</h2>
-      @endif
 
           <div class="fillin">
-            <form class="form-horizontal" method="POST" action="/companyrepresentative/topic-list">
+            <form class="form-horizontal" id="myForm">
               
                 <div class="form-group">
                 <p style="color: red; font-weight: bold; font-style: italic;" class="col-sm-5 col-sm-offset-3">* Each company can publish maximum 05 topics.</p>
@@ -157,28 +165,32 @@
 
 
 
-
                 <div class="form-group">
                 <label for="speciality" class="col-sm-2 control-label">Speciality</label>
                 <div class="col-sm-1">
                   <select name="speciality1" >
-                        <option value="1">Java</option>
-                        <option value="2">C#</option>
-                        <option value="3">Android</option>
-                        <option value="4">PHP</option>
-                        <option value="5">QA</option>
+                        <option value="1"  @if ($max >= 1)  {{$users[0]->SpecialityID == 1 ? "selected" : '' }} @endif >Java</option>
+                        <option value="2"  @if ($max >= 1)  {{$users[0]->SpecialityID == 2 ? "selected" : '' }} @endif >C#</option>
+                        <option value="3"  @if ($max >= 1)  {{$users[0]->SpecialityID == 3 ? "selected" : '' }} @endif >Android</option>
+                        <option value="4"  @if ($max >= 1)  {{$users[0]->SpecialityID == 4 ? "selected" : '' }} @endif >PHP</option>
+                        <option value="5"  @if ($max >= 1)  {{$users[0]->SpecialityID == 5 ? "selected" : '' }} @endif >QA</option>
                       </select>
                 </div>
 
                 <label for="topic" class="col-sm-1 control-label">Topic 1</label>
                 <div class="col-sm-4">
-                  <input class="form-control" id="topic" placeholder="Topic" name="topic1">
+                  <input class="form-control" id="topic" placeholder="Topic" name="topic1" @if ($max >= 1) value="{{$users[0]->content}}" @endif >
                 </div>
 
                 <label for="quantity" class="col-sm-1 control-label">Quantity</label>
                 <div class="col-sm-1">
-                  <input class="form-control" id="quantity" placeholder="Quantity" name="quantity1">
+                  <input class="form-control" id="quantity" placeholder="Quantity" name="quantity1" @if ($max >= 1) value="{{$users[0]->quantity}}" @endif >
                 </div>
+
+                   <span style="color: green;font-weight:bold"class="col-sm-1" @if ($max >= 1)  {{$users[0]->status == 1 ? '':"hidden"   }} @endif >Accepted</span>
+                  <span style="color: red;font-weight:bold"class="col-sm-1" @if ($max >= 1)  {{$users[0]->status == 2 ? '':"hidden"  }} @endif >Declined</span>
+                  <span style="color: #e6e600;font-weight:bold"class="col-sm-1" @if ($max >= 1)  {{$users[0]->status == 0 ? '':"hidden"  }} @endif >Pending</span>
+
               </div>
               
 
@@ -186,111 +198,119 @@
                 <label for="speciality" class="col-sm-2 control-label">Speciality</label>
                 <div class="col-sm-1">
                   <select name="speciality2" >
-                        <option value="1">Java</option>
-                        <option value="2">C#</option>
-                        <option value="3">Android</option>
-                        <option value="4">PHP</option>
-                        <option value="5">QA</option>
+                        <option value="1"  @if ($max >= 2)  {{$users[1]->SpecialityID == 1 ? "selected" : '' }} @endif >Java</option>
+                        <option value="2"  @if ($max >= 2)  {{$users[1]->SpecialityID == 2 ? "selected" : '' }} @endif >C#</option>
+                        <option value="3"  @if ($max >= 2)  {{$users[1]->SpecialityID == 3 ? "selected" : '' }} @endif >Android</option>
+                        <option value="4"  @if ($max >= 2)  {{$users[1]->SpecialityID == 4 ? "selected" : '' }} @endif >PHP</option>
+                        <option value="5"  @if ($max >= 2)  {{$users[1]->SpecialityID == 5 ? "selected" : '' }} @endif >QA</option>
                       </select>
                 </div>
 
                 <label for="topic" class="col-sm-1 control-label">Topic 2</label>
                 <div class="col-sm-4">
-                  <input class="form-control" id="topic" placeholder="Topic" name="topic2">
+                  <input class="form-control" id="topic" placeholder="Topic" name="topic2" @if ($max >= 2) value="{{$users[1]->content}}" @endif >
                 </div>
 
                 <label for="quantity" class="col-sm-1 control-label">Quantity</label>
                 <div class="col-sm-1">
-                  <input class="form-control" id="quantity" placeholder="Quantity" name="quantity2">
+                  <input class="form-control" id="quantity" placeholder="Quantity" name="quantity2" @if ($max >= 2) value="{{$users[1]->quantity}}" @endif >
                 </div>
+                <span style="color: green;font-weight:bold"class="col-sm-1" @if ($max >= 2)  {{$users[1]->status == 1 ? '':"hidden"   }} @endif >Accepted</span>
+                  <span style="color: red;font-weight:bold"class="col-sm-1" @if ($max >= 2)  {{$users[1]->status == 2 ? '':"hidden"  }} @endif >Declined</span>
+                  <span style="color: #e6e600;font-weight:bold"class="col-sm-1" @if ($max >= 2)  {{$users[1]->status == 0 ? '':"hidden"  }} @endif >Pending</span>
               </div>
 
                 <div class="form-group">
                 <label for="speciality" class="col-sm-2 control-label">Speciality</label>
                 <div class="col-sm-1">
                   <select name="speciality3" >
-                        <option value="1">Java</option>
-                        <option value="2">C#</option>
-                        <option value="3">Android</option>
-                        <option value="4">PHP</option>
-                        <option value="5">QA</option>
+                        <option value="1"  @if ($max >= 3)  {{$users[2]->SpecialityID == 1 ? "selected" : '' }} @endif >Java</option>
+                        <option value="2"  @if ($max >= 3)  {{$users[2]->SpecialityID == 2 ? "selected" : '' }} @endif >C#</option>
+                        <option value="3"  @if ($max >= 3)  {{$users[2]->SpecialityID == 3 ? "selected" : '' }} @endif >Android</option>
+                        <option value="4"  @if ($max >= 3)  {{$users[2]->SpecialityID == 4 ? "selected" : '' }} @endif >PHP</option>
+                        <option value="5"  @if ($max >= 3)  {{$users[2]->SpecialityID == 5 ? "selected" : '' }} @endif >QA</option>
                       </select>
                 </div>
 
                 <label for="topic" class="col-sm-1 control-label">Topic 3</label>
                 <div class="col-sm-4">
-                  <input class="form-control" id="topic" placeholder="Topic" name="topic3">
+                  <input class="form-control" id="topic" placeholder="Topic" name="topic3" @if ($max >= 3) value="{{$users[2]->content}}" @endif >
                 </div>
 
                 <label for="quantity" class="col-sm-1 control-label">Quantity</label>
                 <div class="col-sm-1">
-                  <input class="form-control" id="quantity" placeholder="Quantity" name="quantity3">
+                  <input class="form-control" id="quantity" placeholder="Quantity" name="quantity3" @if ($max >= 3) value="{{$users[2]->quantity}}" @endif >
                 </div>
+                <span style="color: green;font-weight:bold"class="col-sm-1" @if ($max >= 3)  {{$users[2]->status == 1 ? '':"hidden"   }} @endif >Accepted</span>
+                  <span style="color: red;font-weight:bold"class="col-sm-1" @if ($max >= 3)  {{$users[2]->status == 2 ? '':"hidden"  }} @endif >Declined</span>
+                  <span style="color: #e6e600;font-weight:bold"class="col-sm-1" @if ($max >= 3)  {{$users[2]->status == 0 ? '':"hidden"  }} @endif >Pending</span>
               </div>
 
                 <div class="form-group">
                 <label for="speciality" class="col-sm-2 control-label">Speciality</label>
                 <div class="col-sm-1">
                   <select name="speciality4" >
-                        <option value="1">Java</option>
-                        <option value="2">C#</option>
-                        <option value="3">Android</option>
-                        <option value="4">PHP</option>
-                        <option value="5">QA</option>
+                        <option value="1"  @if ($max >= 4)  {{$users[3]->SpecialityID == 1 ? "selected" : '' }} @endif >Java</option>
+                        <option value="2"  @if ($max >= 4)  {{$users[3]->SpecialityID == 2 ? "selected" : '' }} @endif >C#</option>
+                        <option value="3"  @if ($max >= 4)  {{$users[3]->SpecialityID == 3 ? "selected" : '' }} @endif >Android</option>
+                        <option value="4"  @if ($max >= 4)  {{$users[3]->SpecialityID == 4 ? "selected" : '' }} @endif >PHP</option>
+                        <option value="5"  @if ($max >= 4)  {{$users[3]->SpecialityID == 5 ? "selected" : '' }} @endif >QA</option>
                       </select>
                 </div>
 
                 <label for="topic" class="col-sm-1 control-label">Topic 4</label>
                 <div class="col-sm-4">
-                  <input class="form-control" id="topic" placeholder="Topic" name="topic4">
+                  <input class="form-control" id="topic" placeholder="Topic" name="topic4" @if ($max >= 4) value="{{$users[3]->content}}" @endif >
                 </div>
 
                 <label for="quantity" class="col-sm-1 control-label">Quantity</label>
                 <div class="col-sm-1">
-                  <input class="form-control" id="quantity" placeholder="Quantity" name="quantity4">
+                  <input class="form-control" id="quantity" placeholder="Quantity" name="quantity4" @if ($max >= 4) value="{{$users[3]->quantity}}" @endif >
                 </div>
+                <span style="color: green;font-weight:bold"class="col-sm-1" @if ($max >= 4)  {{$users[3]->status == 1 ? '':"hidden"   }} @endif >Accepted</span>
+                  <span style="color: red;font-weight:bold"class="col-sm-1" @if ($max >= 4)  {{$users[3]->status == 2 ? '':"hidden"  }} @endif >Declined</span>
+                  <span style="color: #e6e600;font-weight:bold"class="col-sm-1" @if ($max >= 4)  {{$users[3]->status == 0 ? '':"hidden"  }} @endif >Pending</span>
               </div>
 
                 <div class="form-group">
                 <label for="speciality" class="col-sm-2 control-label">Speciality</label>
                 <div class="col-sm-1">
                   <select name="speciality5" >
-                        <option value="1">Java</option>
-                        <option value="2">C#</option>
-                        <option value="3">Android</option>
-                        <option value="4">PHP</option>
-                        <option value="5">QA</option>
+                        <option value="1"  @if ($max >= 5)  {{$users[4]->SpecialityID == 1 ? "selected" : '' }} @endif >Java</option>
+                        <option value="2"  @if ($max >= 5)  {{$users[4]->SpecialityID == 2 ? "selected" : '' }} @endif >C#</option>
+                        <option value="3"  @if ($max >= 5)  {{$users[4]->SpecialityID == 3 ? "selected" : '' }} @endif >Android</option>
+                        <option value="4"  @if ($max >= 5)  {{$users[4]->SpecialityID == 4 ? "selected" : '' }} @endif >PHP</option>
+                        <option value="5"  @if ($max >= 5)  {{$users[4]->SpecialityID == 5 ? "selected" : '' }} @endif >QA</option>
                       </select>
                 </div>
 
                 <label for="topic" class="col-sm-1 control-label">Topic 5</label>
                 <div class="col-sm-4">
-                  <input class="form-control" id="topic" placeholder="Topic" name="topic5">
+                  <input class="form-control" id="topic" placeholder="Topic" name="topic5" @if ($max >= 5) value="{{$users[4]->content}}" @endif >
                 </div>
 
                 <label for="quantity" class="col-sm-1 control-label">Quantity</label>
                 <div class="col-sm-1">
-                  <input class="form-control" id="quantity" placeholder="Quantity" name="quantity5">
+                  <input class="form-control" id="quantity" placeholder="Quantity" name="quantity5" @if ($max >= 5) value="{{$users[4]->quantity}}" @endif >
                 </div>
+                <span style="color: green;font-weight:bold"class="col-sm-1" @if ($max >= 5)  {{$users[4]->status == 1 ? '':"hidden"   }} @endif >Accepted</span>
+                  <span style="color: red;font-weight:bold"class="col-sm-1" @if ($max >= 5)  {{$users[4]->status == 2 ? '':"hidden"  }} @endif >Declined</span>
+                  <span style="color: #e6e600;font-weight:bold"class="col-sm-1" @if ($max >= 5)  {{$users[4]->status == 0 ? '':"hidden"  }} @endif >Pending</span>
               </div>
-
                     <div class="form-group">
-                  <label for="skills" class="col-sm-3 control-label">Deadline:</label>
+                  <label for="skills" class="col-sm-5 control-label">Deadline:</label>
                   <div class="col-sm-7 control-label">
-                  <p id="deadline" style="font-weight:bold; text-align: left"> Thursday, 23 March 2017, 11:55 PM</p>
+                  <p id="deadline" style="font-weight:bold; text-align: left"> {{$dateDeadline}}</p>
                   </div>
                  </div>
-
                  <div class="form-group">
-                  <label for="skills" class="col-sm-3 control-label">Time remaining:</label>
+                  <label for="skills" class="col-sm-5 control-label">Time remaining:</label>
                   <div class="col-sm-7 control-label" id="countdown" style="font-weight: bold; color: red; text-align: left">
                   <script>
                   // Set the date we're counting down to
-                  var countDownDate = new Date("April 20, 2017 23:55:00").getTime();
-
+                   var countDownDate = new Date("<?php echo $deadline->time ?>").getTime();  
                   // Update the count down every 1 second
                   var x = setInterval(function() {
-
                       // Get todays date and time
                       var now = new Date().getTime();
                       
@@ -362,5 +382,26 @@
   </div>
 </footer>
 <!--E.O.Footer-->
-
+<script type="text/javascript">
+ var data = <?php  echo json_encode($users) ?>;
+ console.log(data);
+      $('#myForm').submit(function(e){
+    e.preventDefault();
+    $.ajax({
+        url:'/companyrepresentative/topic/up',
+        type:'post',
+        data:$('#myForm').serialize(),
+        success:function(){
+            //whatever you wanna do after the form is successfully submitted
+        }
+    }).done(function( msg ) {
+    // alert( "Data Saved: " + msg );
+    if(msg==1){
+      alert( "Successfully" );
+    }else{
+      alert( "Error!" );
+    }
+  });;
+});
+    </script>
 </body>

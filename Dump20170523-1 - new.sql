@@ -385,7 +385,22 @@ CREATE TABLE "registration" (
 --
 
 /*!40000 ALTER TABLE "registration" DISABLE KEYS */;
-INSERT INTO "registration" VALUES (2,5,'Nhat','Ha Noi','Nhat ','Nhat@gmail.com','12123',12,'NO','no'),(23,11,'FPT','HN','a','a@gmail.com','1234',12,'a','a'),(24,12,'Viettel','HN','b','b@gmail.com','124',23,'f','f'),(25,13,'CMD','HN','c','c@gmail.com','1225',21,'v','f'),(26,14,'Framgia','HN','d','d@gmail.com','12345',11,'g','f');
+INSERT INTO "registration" (
+"CR_ID",
+"companyname",
+"address",
+"comp_instructor_name",
+"email",
+"phone",
+"quantitysutd",
+"speciality",
+"requirement"
+) VALUES
+(5,'Nhat','Ha Noi','Nhat ','Nhat@gmail.com','12123',12,'NO','no'),
+(11,'FPT','HN','a','a@gmail.com','1234',12,'a','a'),
+(12,'Viettel','HN','b','b@gmail.com','124',23,'f','f'),
+(13,'CMD','HN','c','c@gmail.com','1225',21,'v','f'),
+(14,'Framgia','HN','d','d@gmail.com','12345',11,'g','f');
 /*!40000 ALTER TABLE "registration" ENABLE KEYS */;
 
 --

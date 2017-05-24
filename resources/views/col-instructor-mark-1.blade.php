@@ -7,7 +7,7 @@
     <title>College Instructor Mark</title>
 
     <link rel ="stylesheet" type="text/css" href ="{{ URL::asset('css/font-awesome.min.css')}}" />
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/col.manager-matched info/css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/col.instructor-mark-stud-1/css/styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap.min.css') }}">
     <script type="text/javascript" src="{{ URL::asset('js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
@@ -40,12 +40,12 @@
                <li class="">  
                   <a class ="action-menu-toggle" href="#">
                   <span class ="userbutton">
-                    <span class ="usertext">My name
+                    <span class ="usertext">College Instructor
                     </span>
                     <span class ="avatar">
                       <span class ="ava current">
 
-                          <img src="" alt="avatar"><i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                          <img src="{{ URL::asset('images/logo.png') }}" alt="avatar"><i class="fa fa-user-circle-o" aria-hidden="true"></i>
                       </span>
                     </span>
                   </span>
@@ -108,13 +108,9 @@
         <li class="intern dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Intern <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="/collegeinstructor/outline">Outline</a></li>
-            <li><a href="/collegeinstructor/mark-1">Mark's form</a></li>
-            <li><a href="/collegeinstructor/timesheet">Timesheet</a></li>
-            <li><a href="/collegeinstructor/rate">Rate</a></li>
+            <li><a href="/collegeinstructor/mark-1">Mark</a></li>
           </ul>
         </li>
-            <li><a href="#">Chat</a></li>
             </ul>
 
         

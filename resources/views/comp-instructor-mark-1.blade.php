@@ -4,10 +4,10 @@
 
   <meta charset= "utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Company Instructor Mark</title>
+    <title>College Instructor Mark</title>
 
     <link rel ="stylesheet" type="text/css" href ="{{ URL::asset('css/font-awesome.min.css')}}" />
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/comp.instructor-mark 1/css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/col.instructor-mark-stud-1/css/styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap.min.css') }}">
     <script type="text/javascript" src="{{ URL::asset('js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
@@ -40,7 +40,7 @@
                <li class="">  
                   <a class ="action-menu-toggle" href="#">
                   <span class ="userbutton">
-                    <span class ="usertext">My name
+                    <span class ="usertext">Company Instructor
                     </span>
                     <span class ="avatar">
                       <span class ="ava current">
@@ -55,14 +55,14 @@
 
               <ul class="dropdown-menu hidemenu" aria-labelledby="dropdownMenu1">
                <li>
-                  <a class ="menu-action" href="/companyinstructor">
+                  <a class ="menu-action" href="/collegeinstructor">
                     <i class="fa fa-home" aria-hidden="true"></i>
                     <span class="action-text">Homepage</span>
                   </a>
                 </li>
 
                 <li>
-                  <a class ="menu-action" href="/companyinstructor/edit-profile">
+                  <a class ="menu-action" href="/collegeinstructor/edit-profile">
                     <i class="fa fa-user-md" aria-hidden="true"></i>
                     <span class="action-text">Profile</span>
                   </a>
@@ -110,11 +110,10 @@
           <ul class="dropdown-menu">
             <li><a href="/companyinstructor/outline">Outline</a></li>
             <li><a href="/companyinstructor/mark-1">Mark's form</a></li>
-            <li><a href="/companyinstructor/timesheet">Timesheet</a></li>
-            <li><a href="/companyinstructor/rate">Rate</a></li>
+            <li><a href="/companyinstructor/timesheet-1">Timesheet</a></li>
+            <li><a href="/companyinstructor/rate-1">Rate</a></li>
           </ul>
         </li>
-            <li><a href="#">Chat</a></li>
             </ul>
 
         

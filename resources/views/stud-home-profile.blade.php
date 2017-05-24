@@ -1,3 +1,19 @@
+@if (!isset($users))
+  @php
+    $users = new StdClass();
+    $users->name = '';
+    $users->gender = '';
+    $users->studid = '';
+    $users->email = '';
+    $users->address = '';
+    $users->description = '';
+  @endphp
+@else
+  @php
+    $image = 'avatar/avatar_' .$users->id . '.png';
+  @endphp
+@endif
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +26,9 @@
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap.min.css') }}">
     <script type="text/javascript" src="{{ URL::asset('js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
+
+     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap-imageupload.css') }}">
+     <script type="text/javascript" src="{{ URL::asset('js/bootstrap-imageupload.js') }}"></script>
 
 </head>
 
@@ -39,12 +58,12 @@
                <li class="">  
                   <a class ="action-menu-toggle" href="#">
                   <span class ="userbutton">
-                    <span class ="usertext">Student
+                    <span class ="usertext">{{$users->name}}
                     </span>
                     <span class ="avatar">
                       <span class ="ava current">
 
-                          <img src="{{ URL::asset('images/logo.png') }}" alt="avatar"><i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                          <img src="{{ URL::asset($image) }}" alt="avatar"><i class="fa fa-user-circle-o" aria-hidden="true"></i>
                       </span>
                     </span>
                   </span>
@@ -117,11 +136,11 @@
         <li class="intern dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Intern <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Topic</a></li>
+            <li><a href="/student/topic">Topic</a></li>
             <li><a href="/student/report">Report</a></li>
             <li><a href="/student/feedback">Feedback</a></li>
-            <li><a href="#">Status</a></li>
-            <li><a href="#">Mark</a></li>
+            <li><a href="/student/status">Status</a></li>
+            <li><a href="/student/mark">Mark</a></li>
           </ul>
         </li>
 
@@ -156,7 +175,7 @@
               <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">Fullname</label>
                 <div class="col-sm-4">
-                  <input class="form-control" id="name" placeholder="Fullname" name="fullname">
+                  <input class="form-control" id="name" placeholder="Fullname" name="fullname" value="{{$users->name}}">
                 </div>
 
                 
@@ -167,10 +186,10 @@
                   <div class="radio radio-danger">
                     <label style="font-weight: bold"> Gender  </label>
                     <label style="margin-left: 40px">
-                      <input type="radio" name="survey" value="male"> Male
+                      <input type="radio" name="survey" value="male" {{$users->gender == 'male' ? "checked=checked" : ''}}> Male
                     </label>
                     <label style="margin-left: 40px">
-                      <input type="radio" name="survey" value="female"> Female
+                      <input type="radio" name="survey" value="female" {{$users->gender == 'female' ? "checked=checked" : ''}}> Female
                     </label>
                   </div>
                 </div>
@@ -180,7 +199,7 @@
               <div class="form-group">
                 <label for="idnumber" class="col-sm-2 control-label">Student's number</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" id="idnumber" placeholder="Student's number" name="stdnumber">
+                  <input type="text" class="form-control" id="idnumber" placeholder="Student's number" name="stdnumber" value="{{$users->studid}}"> 
                 </div>
               </div>
 
@@ -188,7 +207,7 @@
               <div class="form-group">
                 <label for="address" class="col-sm-2 control-label">Address</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" id="address" placeholder="Address" name="address">
+                  <input type="text" class="form-control" id="address" placeholder="Address" name="address" value="{{$users->address}}">
                 </div>
               </div>
 
@@ -197,7 +216,7 @@
 
                 <label for="email" class="col-sm-2 control-label">Email</label>
                 <div class="col-sm-4">
-                  <input type="email" class="form-control" id="email" placeholder="Email" name="email">
+                  <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="{{$users->email}}">
                 </div>
               </div>
 
@@ -205,36 +224,25 @@
                  <div class="form-group">
                   <label for="skills" class="col-sm-2 control-label">Description</label>
                   <div class="col-sm-7">
-                  <textarea class="form-control" col="7" rows="7" name="description" ></textarea>
+                  <textarea class="form-control" col="7" rows="7" name="description" >{{$users->description}}</textarea>
                   </div>
                  </div>
 
-                 <div class="form-group">
-                  <label for="skills" class="col-sm-2 control-label">Avatar</label>
-                  <input id="input-folder-2" name="input-folder-2[]" class="file-loading" type="file" multiple webkitdirectory accept="image/*">
-                  <div id="errorBlock" class="help-block"></div>
-                  <script>
-                  $(document).on('ready', function() {
-                      $("#input-folder-2").fileinput({
-                          browseLabel: 'Select Folder...',
-                          previewFileIcon: '<i class="fa fa-file"></i>',
-                          allowedPreviewTypes: null, // set to empty, null or false to disable preview for all types
-                          previewFileIconSettings: {
-                              'xls': '<i class="fa fa-file-excel-o text-success"></i>',
-                              'zip': '<i class="fa fa-file-archive-o text-muted"></i>',
-                          },
-                          previewFileExtSettings: {
-                              'xls': function(ext) {
-                                return ext.match(/(xls|xlsx)$/i);
-                              },
-                              'zip': function(ext) {
-                                  return ext.match(/(zip|rar|tar|gzip|gz|7z)$/i);
-                              },
-                                                        }
-                      });
-                  });
-                  </script>
-                  </div>
+                 <div class="imageupload form-group">
+                <label class="col-sm-2 control-label">Avatar</label>
+                <div class="file-tab col-sm-3">
+                    <label class="btn btn-default btn-file">
+                        <span>Choose Your Photo</span>
+                        <!-- The file is stored here. -->
+                        <input type="file" name="image_file">
+                    </label>
+                </div>
+                 </div>
+              
+                <script>
+                    var $imageupload = $('.imageupload');
+                    $imageupload.imageupload();
+                </script>
             
                 <div class="form-group">
                   <div class="text-center">
@@ -280,10 +288,19 @@
 <script type="text/javascript">
       $('#myForm').submit(function(e){
     e.preventDefault();
+     var data,dataIm;
+    data = $('#myForm').serialize();
+    if($('#image_upload').length == 0) {
+
+      }else{
+        dataIm = $('#image_upload')[0].src;
+          
+          data = data +"&img="+encodeURIComponent(dataIm);
+      }
     $.ajax({
         url:'/student/upEditProfile',
         type:'post',
-        data:$('#myForm').serialize(),
+        data:data,
         success:function(){
             //whatever you wanna do after the form is successfully submitted
         }

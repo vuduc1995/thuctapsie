@@ -87,4 +87,30 @@ footer{
 	text-align: center;
 }
 
-
+#header .header-main .header-main-content .container-fluid .user-menu .wrap-item{
+	text-align: right;
+}
+#header .header-main .header-main-content .container-fluid .user-menu .wrap-item .menubar{
+	text-transform: capitalize;
+}
+#header .header-main .header-main-content .container-fluid .user-menu .wrap-item a{
+	text-decoration: none;
+	color: black;
+}
+#header .header-main .header-main-content .container-fluid .user-menu .wrap-item .avatar{
+	margin-left: 15px;
+}
+#header .header-main .header-main-content .container-fluid .user-menu .wrap-item img{
+	width: 50px;
+	height: 45px;
+}
+#header .header-main .header-main-content .container-fluid .user-menu .wrap-item ul li{
+	list-style-type: none;
+}
+#header .header-main .header-main-content .container-fluid .user-menu .wrap-item .hidemenu{
+	left: 147px;
+	background: #e7e7e7;
+}
+#header .header-main .header-main-content .container-fluid .user-menu .wrap-item .hidemenu .divider{
+	background: #ffffff;
+}

@@ -1,3 +1,14 @@
+@if (!isset($users))
+  @php
+    $users = new StdClass();
+    $users->fullname = '';
+  @endphp
+ @else  
+   @php
+    $dateDeadline = new DateTime($users->deadline);
+    $dateDeadline = date_format($dateDeadline, 'g:ia \o\n l jS F Y');
+   @endphp
+@endif
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +21,8 @@
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap.min.css') }}">
     <script type="text/javascript" src="{{ URL::asset('js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
+      <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap-imageupload.css') }}">
+     <script type="text/javascript" src="{{ URL::asset('js/bootstrap-imageupload.js') }}"></script>
 
 </head>
 
@@ -109,11 +122,11 @@
         <li class="intern dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Intern <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Topic</a></li>
+            <li><a href="/student/topic">Topic</a></li>
             <li><a href="/student/report">Report</a></li>
             <li><a href="/student/feedback">Feedback</a></li>
-            <li><a href="#">Status</a></li>
-            <li><a href="#">Mark</a></li>
+            <li><a href="/student/status">Status</a></li>
+            <li><a href="/student/mark">Mark</a></li>
           </ul>
         </li>
 
@@ -144,15 +157,15 @@
         <h2>report</h2>
 
           <div class="fillin">
-            <form class="form-horizontal">
+            <form class="form-horizontal" method="POST" action="/student/upReport" accept-charset="UTF-8" enctype="multipart/form-data">
               <div class="form-group">
 
                 <label for="tieu-de" class="col-sm-5 control-label">Subject: Report</label>
                  <div class="col-sm-7 control-label" style="text-align: left">
-                 <select> 
+                 <select name="type"> 
                 
-                  <option value=“gk”> Mid-term</option> 
-                  <option value=“ck”> Final</option> 
+                  <option value="1"> Mid-term</option> 
+                  <option value="2"> Final</option> 
                   </select>
                    </div>  
               </div>  
@@ -160,42 +173,26 @@
               <div class="form-group">
                   <label for="skills" class="col-sm-5 control-label">Content</label>
                   <div class="col-sm-3 control-label">
-                  <textarea class="form-control" col="3" rows="3" ></textarea>
+                  <textarea class="form-control" col="3" rows="3" name="content" ></textarea>
                   </div>
                  </div>
 
-                 <div class="form-group">
-                  <label for="skills" class="col-sm-5 control-label">Attachments:</label>
-                  <div class="col-sm-7 control-label" style="text-align: left">
-                  <input id="input-folder-2" name="input-folder-2[]" class="file-loading" type="file" multiple webkitdirectory accept="image/*">
-                  <div id="errorBlock" class="help-block"></div>
-                  <script>
-                  $(document).on('ready', function() {
-                      $("#input-folder-2").fileinput({
-                          browseLabel: 'Select Folder...',
-                          previewFileIcon: '<i class="fa fa-file"></i>',
-                          allowedPreviewTypes: null, // set to empty, null or false to disable preview for all types
-                          previewFileIconSettings: {
-                              'doc': '<i class="fa fa-file-word-o text-primary"></i>',
-                              'zip': '<i class="fa fa-file-archive-o text-muted"></i>',
-                          },
-                          previewFileExtSettings: {
-                              'doc': function(ext) {
-                                  return ext.match(/(doc|docx)$/i);
-                              },
-                              'zip': function(ext) {
-                                  return ext.match(/(zip|rar|tar|gzip|gz|7z)$/i);
-                              },
-                                                        }
-                      });
-                  });
-                  </script>
-                  </div>
-                  </div>    
+                  <div class="form-group">
+            <label for="skills" class="col-sm-5 control-label">Attachments:</label>
+            <div class="file-tab col-sm-5" style="text-align: left">
+                <!-- <a href="{{URL::asset('document\midterm\2\2-Bang-diem-ren-luyen.doc')}}">test</a> -->
+                <label class="btn btn-default btn-file"> 
+                  <input type="file" name="file" required />
+                </label>
+             
+              <div id="output"></div>   
+               
+            </div>
+          </div>  
                   <div class="form-group">    
                   <label for="skills" class="col-sm-5 control-label">Deadline:</label>    
                   <div class="col-sm-7 control-label">    
-                  <p id="deadline" style="font-weight:bold; text-align: left"> Thursday, 23 March 2017, 11:55 PM</p>    
+                  <p id="deadline" style="font-weight:bold; text-align: left"> {{$dateDeadline}}</p>    
                   </div>    
                  </div>   
                  <div class="form-group">   
@@ -203,7 +200,7 @@
                   <div class="col-sm-7 control-label" id="countdown" style="font-weight: bold; color: red; text-align: left">   
                   <script>    
                   // Set the date we're counting down to    
-                  var countDownDate = new Date("April 20, 2017 23:55:00").getTime();    
+                  var countDownDate = new Date("<?php echo $users->deadline ?>").getTime();   
                   // Update the count down every 1 second   
                   var x = setInterval(function() {    
                       // Get todays date and time   
@@ -225,7 +222,7 @@
                       // If the count down is over, write some text     
                       if (distance < 0) {   
                           clearInterval(x);   
-                          document.getElementById("demo").innerHTML = "EXPIRED";    
+                          // document.getElementById("demo").innerHTML = "EXPIRED";    
                       }   
                   }, 1000);   
                   </script>   

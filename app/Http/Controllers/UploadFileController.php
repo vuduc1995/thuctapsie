@@ -6,15 +6,12 @@ use Illuminate\Http\Request;
 
 use Server\Http\Requests;
 
-use Log;
-
 class UploadFileController extends Controller {
    public function index(){
       return view('uploadfile');
    }
    public function showUploadFile(Request $request){
-Log::info("oneeee wtf");
-      $file = $request->file('image');
+      $file = $request->file('file');
    
       //Display File Name
       echo 'File Name: '.$file->getClientOriginalName();
@@ -36,10 +33,7 @@ Log::info("oneeee wtf");
       echo 'File Mime Type: '.$file->getMimeType();
    
       //Move Uploaded File
-Log::info("oneeee");
-      $destinationPath = 'uploads';
-Log::info("oneeee 2");
+      $destinationPath = 'uploads/rerort';
       $file->move($destinationPath,$file->getClientOriginalName());
-Log::info("oneeee 33333");
    }
 }

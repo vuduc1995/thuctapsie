@@ -105,7 +105,6 @@
             <li><a href="/companyinstructor/rate">Rate</a></li>
           </ul>
         </li>
-            <li><a href="#">Chat</a></li>
             </ul>
 
         

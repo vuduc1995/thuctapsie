@@ -101,8 +101,9 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="/admin"><i class="fa fa-home" aria-hidden="true"></i> HOME<span class="sr-only">(current)</span></a></li>
 
-        <li><a href="#">Manage User</a></li>
-        <li><a href="#">Manage Mark</a></li>
+        <li><a href="/admin/manager-user">Manage User</a></li>
+        <li><a href="/admin/manager-mark">Manage Mark</a></li>
+        <li><a href="/admin/auto-match">Auto Match Info</a></li>
         
           </ul>
         </li>

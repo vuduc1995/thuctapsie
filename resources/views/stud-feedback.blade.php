@@ -119,11 +119,11 @@
         <li class="intern dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Intern <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Topic</a></li>
+            <li><a href="/student/topic">Topic</a></li>
             <li><a href="/student/report">Report</a></li>
             <li><a href="/student/feedback">Feedback</a></li>
-            <li><a href="#">Status</a></li>
-            <li><a href="#">Mark</a></li>
+            <li><a href="/student/status">Status</a></li>
+            <li><a href="/student/mark">Mark</a></li>
           </ul>
         </li>
 

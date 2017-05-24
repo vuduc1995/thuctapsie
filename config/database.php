@@ -26,6 +26,7 @@ return [
     |
     */
 
+    /*'default' => env('DB_CONNECTION', 'mysql'),*/
     'default' => env('DB_CONNECTION', 'postgres'),
 
     /*
@@ -77,7 +78,7 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',
-        ]
+        ],
 
     ],
 

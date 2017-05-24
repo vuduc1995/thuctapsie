@@ -100,11 +100,10 @@
           <ul class="dropdown-menu">
             <li><a href="/companyinstructor/outline">Outline</a></li>
             <li><a href="/companyinstructor/mark-1">Mark's form</a></li>
-            <li><a href="/companyinstructor/timesheet">Timesheet</a></li>
-            <li><a href="/companyinstructor/rate">Rate</a></li>
+            <li><a href="/companyinstructor/timesheet-1">Timesheet</a></li>
+            <li><a href="/companyinstructor/rate-1">Rate</a></li>
           </ul>
         </li>
-            <li><a href="#">Chat</a></li>
             </ul>
 
         

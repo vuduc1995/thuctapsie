@@ -1,0 +1,21 @@
+Dangvuduc1995
+
+
+git add .
+git commit -m "fix"
+git push heroku master
+git push
+
+
+
+if (env('DB_CONNECTION') == 'mysql') {
+} else if (env('DB_CONNECTION') == 'pgsql') {
+}
+
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=sie
+DB_USERNAME=root
+DB_PASSWORD=matkhau123

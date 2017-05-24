@@ -1,3 +1,13 @@
+@if (!isset($users))
+  @php
+  @endphp
+ @else  
+   @php
+    $dateDeadline = new DateTime($users->time);
+    $dateDeadline = date_format($dateDeadline, 'g:ia \o\n l jS F Y');
+   @endphp
+@endif
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,7 +50,7 @@
                <li class="">  
                   <a class ="action-menu-toggle" href="#">
                   <span class ="userbutton">
-                    <span class ="usertext">My name
+                    <span class ="usertext">Company Instructor
                     </span>
                     <span class ="avatar">
                       <span class ="ava current">
@@ -107,12 +117,11 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Intern <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="/companyinstructor/outline">Outline</a></li>
-            <li><a href="/companyinstructor/mark">Mark's form</a></li>
-            <li><a href="/companyinstructor/timesheet">Timesheet</a></li>
-            <li><a href="/companyinstructor/rate">Rate</a></li>
+            <li><a href="/companyinstructor/mark-1">Mark's form</a></li>
+            <li><a href="/companyinstructor/timesheet-1">Timesheet</a></li>
+            <li><a href="/companyinstructor/rate-1">Rate</a></li>
           </ul>
         </li>
-            <li><a href="#">Chat</a></li>
             </ul>
 
         
@@ -142,44 +151,26 @@
         <h2>outline</h2>
 
           <div class="fillin">
-            <form class="form-horizontal">
+            <form class="form-horizontal" method="POST" action="/companyinstructor/upOutline" accept-charset="UTF-8" enctype="multipart/form-data">
               <div class="form-group">
                
 
                 
-                <div class="form-group">
-                 <label for="skills" class="col-sm-5 control-label">Attachments:</label>
-                  <div class="col-sm-7 control-label" style="text-align: left">
-                  <input id="input-folder-2" name="input-folder-2[]" class="file-loading" type="file" multiple webkitdirectory accept="image/*">
-                  <div id="errorBlock" class="help-block"></div>
-                  <script>
-                  $(document).on('ready', function() {
-                      $("#input-folder-2").fileinput({
-                          browseLabel: 'Select Folder...',
-                          previewFileIcon: '<i class="fa fa-file"></i>',
-                          allowedPreviewTypes: null, // set to empty, null or false to disable preview for all types
-                          previewFileIconSettings: {
-                              'xls': '<i class="fa fa-file-excel-o text-success"></i>',
-                              'zip': '<i class="fa fa-file-archive-o text-muted"></i>',
-                          },
-                          previewFileExtSettings: {
-                              'xls': function(ext) {
-                                return ext.match(/(xls|xlsx)$/i);
-                              },
-                              'zip': function(ext) {
-                                  return ext.match(/(zip|rar|tar|gzip|gz|7z)$/i);
-                              },
-                                                        }
-                      });
-                  });
-                  </script>
-                  </div>
+             <div class="form-group">
+                    <label for="skills" class="col-sm-5 control-label">Attachments:</label>
+                    <div class="file-tab col-sm-5" style="text-align: left">
+                        <label class="btn btn-default btn-file"> 
+                          <input type="file" name="file" required />
+                        </label>
+                      <div id="output"></div>   
+                        
+                    </div>
                   </div>
 
                    <div class="form-group">
                   <label for="skills" class="col-sm-5 control-label">Deadline:</label>
                   <div class="col-sm-7 control-label">
-                  <p id="deadline" style="font-weight:bold; text-align: left"> Thursday, 23 March 2017, 11:55 PM</p>
+                  <p id="deadline" style="font-weight:bold; text-align: left"> {{$dateDeadline}}</p>
                   </div>
                  </div>
 
@@ -188,7 +179,7 @@
                   <div class="col-sm-7 control-label" id="countdown" style="font-weight: bold; color: red; text-align: left">
                   <script>
                   // Set the date we're counting down to
-                  var countDownDate = new Date("April 20, 2017 23:55:00").getTime();
+                  var countDownDate = new Date("<?php echo $users->time ?>").getTime();   
 
                   // Update the count down every 1 second
                   var x = setInterval(function() {

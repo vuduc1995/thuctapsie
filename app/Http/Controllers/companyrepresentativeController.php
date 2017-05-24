@@ -8,70 +8,35 @@ use Server\Http\Requests;
 
 class companyrepresentativeController extends Controller
 {
-    public function updateTopics(Request $request)
+    public function showRegistration(Request $request)
     {
-        $userId = \Session::get('loginId');
+        $userid = \Session::get('loginId');
+        try {
 
-        $speciality1 = $request->speciality1;
-        $topic1 = $request->topic1;
-        $quantity1 = $request->quantity1;
+            $user = \DB::table('registration')->where('CR_ID',$userid)->first();
+            $deadline = \DB::table('deadline')->where('type',4)->first();
+            $user->deadline = $deadline->time;
+            if(is_null($user)){
+                return  view('comp-representative-regis');
+            }else{
+                
+                   return view('comp-representative-regis',['users'=> $user]);
 
-        $speciality2 = $request->speciality2;
-        $topic2 = $request->topic2;
-        $quantity2 = $request->quantity2;
+                
+                   
+                 }
+            }catch(\Exception $e){
+               return view('comp-representative-regis');
+            }
 
-        $speciality3 = $request->speciality3;
-        $topic3 = $request->topic3;
-        $quantity3 = $request->quantity3;
-
-        $speciality4 = $request->speciality4;
-        $topic4 = $request->topic4;
-        $quantity4 = $request->quantity4;
-
-        $speciality5 = $request->speciality5;
-        $topic5 = $request->topic5;
-        $quantity5 = $request->quantity5;
-
-        $comRep = null;
-        if (env('DB_CONNECTION') == 'mysql') {
-        $comRep = \DB::select("select * from companyrepresentative where CR_ID = ? ",[$userId]);
-        } else if (env('DB_CONNECTION') == 'pgsql') {
-        $comRep = \DB::select("select * from companyrepresentative where \"CR_ID\" = ? ",[$userId]);
-        }
-
-        $comId = $comRep[0]->CompanyID; // 1 companyrepresentative - 1 company
-
-        \DB::table('topic')
-        ->where('CompanyID', $comId)->delete();
-
-        \DB::table('topic')->insert(
-         array('CompanyID' => $comId,'SpecialityID' => $speciality1, 'content' => $topic1, 'quantity' => $quantity1, 'quantityLeft' => 0));
-        \DB::table('topic')->insert(
-         array('CompanyID' => $comId,'SpecialityID' => $speciality2, 'content' => $topic2, 'quantity' => $quantity2, 'quantityLeft' => 0));
-        \DB::table('topic')->insert(
-         array('CompanyID' => $comId,'SpecialityID' => $speciality3, 'content' => $topic3, 'quantity' => $quantity3, 'quantityLeft' => 0));
-        \DB::table('topic')->insert(
-         array('CompanyID' => $comId,'SpecialityID' => $speciality4, 'content' => $topic4, 'quantity' => $quantity4, 'quantityLeft' => 0));
-        \DB::table('topic')->insert(
-         array('CompanyID' => $comId,'SpecialityID' => $speciality5, 'content' => $topic5, 'quantity' => $quantity5, 'quantityLeft' => 0));
-
-        //  \DB::table('topic')->insert(
-        //  array('CompanyID' => $comId,'SpecialityID' => $speciality1, 'content' => $topic1, 'quantity' => $quantity1));
-        // \DB::table('topic')->insert(
-        //  array('CompanyID' => $comId,'SpecialityID' => $speciality2, 'content' => $topic2, 'quantity' => $quantity2));
-        // \DB::table('topic')->insert(
-        //  array('CompanyID' => $comId,'SpecialityID' => $speciality3, 'content' => $topic3, 'quantity' => $quantity3));
-        // \DB::table('topic')->insert(
-        //  array('CompanyID' => $comId,'SpecialityID' => $speciality4, 'content' => $topic4, 'quantity' => $quantity4));
-        // \DB::table('topic')->insert(
-        //  array('CompanyID' => $comId,'SpecialityID' => $speciality5, 'content' => $topic5, 'quantity' => $quantity5));
+        
 
 
+        return view('comp-representative-regis');
 
-        return view('comp-representative-publish-topic-list', ['compId' => $comId]);
-     }
+    }
 
-    public function registration(Request $request)
+    public function upRegistration(Request $request)
     {
         $userid = \Session::get('loginId');
         $compName = $request->compName;
@@ -82,92 +47,177 @@ class companyrepresentativeController extends Controller
         $numberStudent = $request->numberStudent;
         $speciality = $request->speciality;
         $requirement = $request->requirement;
-        \DB::table('registration')->insert(
-             array('CR_ID' => $userid, 'companyname' => $compAddress,'address' => $compAddress,'comp_instructor_name' => $compInsName,
-                'email' => $email,'phone' => $phoneNumber, 'quantitysutd' => $numberStudent,'speciality' => $speciality, 'requirement' => $requirement)
-        );
+
+        if($compName == "" || $compAddress == "" || $compInsName == ""|| $email == ""|| $phoneNumber == ""|| $numberStudent == ""|| $speciality == ""
+            || $requirement == ""){
+            return 0;
+
+        }
+        try {
+            $user = \DB::table('registration')->where('CR_ID',$userid )->first();
+          
+            if(is_null($user)){
+                $function = 0;
+            }else{
+                $function = 1; 
+            }
+
+            if($function == 0){
+             \DB::table('registration')->insert(
+                 array('CR_ID' => $userid, 'companyname' => $compName,'address' => $compAddress,'comp_instructor_name' => $compInsName,
+                    'email' => $email,'phone' => $phoneNumber, 'quantitysutd' => $numberStudent,'speciality' => $speciality, 'requirement' => $requirement)
+            );
+             } else if($function == 1){
+                \DB::table('registration')->where('CR_ID',$userid )->update(
+                 array('CR_ID' => $userid, 'companyname' => $compName,'address' => $compAddress,'comp_instructor_name' => $compInsName,
+                    'email' => $email,'phone' => $phoneNumber, 'quantitysutd' => $numberStudent,'speciality' => $speciality, 'requirement' => $requirement)
+            );
 
 
-        echo $userid;
+             }
 
-        echo $compName . $compAddress .$compInsName .$email . $phoneNumber . $numberStudent . $speciality . $requirement;
+        }catch(\Exception $e){
+                return 0;
+            } 
+
+            return 1;
+    }
+
+   public function showProfileCompanyrepresentative(Request $request)
+    {
+        $userid = \Session::get('loginId');
+        try {
+
+            $user = \DB::table('companyrepresentative')->where('CR_ID',$userid)->first();
+            if(is_null($user)){
+                return view('comp-representative-profile');
+            }else{
+                     $user->id = $userid;
+                   return view('comp-representative-profile',['users'=> $user]);
+
+                
+                   
+                 }
+            }catch(\Exception $e){
+                return view('comp-representative-profile');
+            }
+
         
 
 
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+       return view('comp-representative-profile');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function editProfile(Request $request)
     {
-        //
+        $userid = \Session::get('loginId');
+        $fullname = $request->name;
+        $sex = $request->survey;
+        $Address = $request->address;
+        $email = $request->email;
+        $position = $request->position;
+        $description = $request->description;
+        if($fullname == "" || $sex == "" || $Address == ""|| $email == ""|| $description == "" || $position == ""){
+            return 0;
+
+        }
+        
+        $img = $request->img;
+           if(!is_null($img)){
+        $data = explode(',', $img);
+        $content = base64_decode($data[1]);
+        $nameImage = "avatar_" . $userid;
+        $path = public_path() . "/avatar/" . $nameImage .".png";
+        file_put_contents($path, $content);
+        }
+        try {
+                
+
+                \DB::table('companyrepresentative')->where('CR_ID',$userid )->update(
+             array('CR_ID' => $userid, 'name' => $fullname,'gender' => $sex,
+                'address' => $Address,'email' => $email, 'description' => $description,'position' => $position));
+            }catch(\Exception $e){
+                return $e;
+            }
+
+
+        return 1;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function upTopic(Request $request)
     {
-        //
+        $userid = \Session::get('loginId');
+        $user = \DB::table('companyrepresentative')->where('CR_ID',$userid )->first();
+        $companyID = $user->CompanyID;
+
+         for ($i = 1; $i <= 5; $i++) {
+                $speciality[$i] = $request['speciality'.$i]; 
+                $topic[$i] = $request['topic'.$i]; 
+                $quantity[$i] = $request['quantity'.$i];
+            }
+        try {
+            $allTopicHave = \DB::table('topic')->where('CompanyID',$companyID )->get();
+
+            if(sizeof($allTopicHave) >= 5){
+                 for ($i = 1; $i <= 5; $i++) {
+                        \DB::table('topic')->where('idTopic',$allTopicHave[$i-1]->idTopic )->update(
+                 array('idTopic' => $allTopicHave[$i-1]->idTopic, 'SpecialityID' => $speciality[$i],'CompanyID' => $companyID,'content' => $topic[$i],
+                    'quantity' => $quantity[$i],'quantityLeft' => $quantity[$i])
+            );
+                    }
+
+            }else{
+                        
+                  
+
+                        for ($i = 1; $i <= sizeof($allTopicHave); $i++) {
+
+                                \DB::table('topic')->where('idTopic',$allTopicHave[$i-1]->idTopic )->update(
+                         array('idTopic' => $allTopicHave[$i-1]->idTopic, 'SpecialityID' => $speciality[$i],'CompanyID' => $companyID,'content' => $topic[$i],
+                            'quantity' => $quantity[$i],'quantityLeft' => $quantity[$i])
+                    );
+                                }
+                                for ($i = sizeof($allTopicHave)+1; $i <= 5; $i++) {
+                                    
+                                \DB::table('topic')->insert(
+                         array( 'SpecialityID' => $speciality[$i],'CompanyID' => $companyID,'content' => $topic[$i],
+                            'quantity' => $quantity[$i],'quantityLeft' => $quantity[$i])
+                    );
+                         
+                    }
+
+                   
+                 }
+
+        }catch(\Exception $e){
+                return $e;
+            } 
+            return 1;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+      public function showTopic(Request $request)
     {
-        //
-    }
+        try{
+            $userid = \Session::get('loginId');
+            $data = \DB::table('companyrepresentative')->where('CR_ID',$userid )->first();
+            $user = \DB::table('topic')->where('CompanyID',$data->CompanyID )->get();
+            $deadline = \DB::table('deadline')->where('type',5)->first();
+            $total = count((array)$user);
+            $deadline->numberLine = $total;
+            if($total == 0){
+            }
+            if(is_null($user)){
+                return  view('comp-representative-publish-topic-list');
+            }else{
+                
+                   return view('comp-representative-publish-topic-list',['users'=> $user,'deadline' => $deadline]);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+                
+                   
+                 }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+         }catch(\Exception $e){
+                return $e;
+            } 
     }
 }

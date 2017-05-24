@@ -119,8 +119,8 @@
             <li><a href="/student/topic">Topic</a></li>
             <li><a href="/student/report">Report</a></li>
             <li><a href="/student/feedback">Feedback</a></li>
-            <li><a href="#">Status</a></li>
-            <li><a href="#">Mark</a></li>
+            <li><a href="/student/status">Status</a></li>
+            <li><a href="/student/mark">Mark</a></li>
           </ul>
         </li>
 
