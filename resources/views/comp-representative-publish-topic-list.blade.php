@@ -143,9 +143,9 @@
   <div class="container-fluid">
       
       @if (!empty($compId))
-        <h2>topic list</h2>
-      @else
         <h2>topic list {{$compId}}</h2>
+      @else
+        <h2>topic list</h2>
       @endif
 
           <div class="fillin">
