@@ -68,7 +68,7 @@ class companyrepresentativeController extends Controller
 
 
 
-        return view('comp-representative-publish-topic-list', []);
+        return view('comp-representative-publish-topic-list', ['compId' => $comId]);
      }
 
     public function registration(Request $request)

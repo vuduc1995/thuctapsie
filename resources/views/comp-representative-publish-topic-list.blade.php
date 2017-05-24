@@ -142,7 +142,7 @@
 <div class="form-register">
   <div class="container-fluid">
       
-        <h2>topic list</h2>
+        <h2>topic list {{$compId}}</h2>
 
           <div class="fillin">
             <form class="form-horizontal" method="POST" action="/companyrepresentative/topic-list">
