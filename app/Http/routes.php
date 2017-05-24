@@ -212,16 +212,37 @@ Route::get('/companyrepresentative', function () {
 
 Route::get('/companyrepresentative/topic-list', function () {
   $userId = \Session::get('loginId');
-  $comRep = \DB::select("select * from companyrepresentative where CR_ID = ? ",[$userId]);
+  $comRep = null;
+
+  if (env('DB_CONNECTION') == 'mysql') {
+    $comRep = \DB::select("select * from companyrepresentative where CR_ID = ? ",[$userId]);
+  } else if (env('DB_CONNECTION') == 'pgsql') {
+    $comRep = \DB::select("select * from companyrepresentative where \"CR_ID\" = ? ",[$userId]);
+  }
+
+
 
   $comId = $comRep[0]->CompanyID;
+  $topics = null;
+
+  if (env('DB_CONNECTION') == 'mysql') {
   $topics = \DB::select("select * from topic where CompanyID = ? ",[$comId]);
+  } else if (env('DB_CONNECTION') == 'pgsql') {
+  $topics = \DB::select("select * from topic where \"CompanyID\" = ? ",[$comId]);
+  }
+
+
   $speList1 = array();
   foreach($topics as $topic) {
     $t = $topic->content;
 
     $speId = $topic->SpecialityID;
+    $spe = null;
+    if (env('DB_CONNECTION') == 'mysql') {
     $spe = \DB::select("select * from speciality where idSpeciality = ? ",[$speId]);
+    } else if (env('DB_CONNECTION') == 'pgsql') {
+    $spe = \DB::select("select * from speciality where \"idSpeciality\" = ? ",[$speId]);
+    }
     $name = $spe[0]->name;
 
     $speList1[0] = $name;
