@@ -17,6 +17,9 @@ Route::get('/', function () {
 	$role = \Session::get('loginRole');
 	$userid = \Session::get('loginId');
 
+  Log::info('teeeeeet');
+  Log::info(config('global.siteTitle'));
+
 	if(is_null($role)){
 		return view('home');	
 	}else{

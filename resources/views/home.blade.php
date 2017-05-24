@@ -89,7 +89,7 @@
 <div class="signin-form">
   <div class="container-fluid">
       
-        <h2>Sign In</h2>
+        <h2>Sign In {{ config('global.siteTitle') }}</h2>
 
           <div class="signin-normal">
           <form class="signin" method="POST" action="/user/login">
