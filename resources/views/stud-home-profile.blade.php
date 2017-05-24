@@ -305,7 +305,7 @@
             //whatever you wanna do after the form is successfully submitted
         }
     }).done(function( msg ) {
-    // alert( "Data Saved: " + msg );
+    alert( "Data Saved: " + msg );
     if(msg==1){
       alert( "Successfully" );
     }else{
