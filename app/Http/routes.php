@@ -18,7 +18,13 @@ Route::get('/', function () {
 	$userid = \Session::get('loginId');
 
   Log::info('teeeeeet');
-  Log::info(config('global.siteTitle'));
+  Log::info(env('DB_CONNECTION'));
+
+  if (env('DB_CONNECTION') == 'mysql') {
+    Log::info('T mysql');
+  } else if (env('DB_CONNECTION') == 'pgsql') {
+    Log::info('T pgsqlfff');
+  }
 
 	if(is_null($role)){
 		return view('home');	
@@ -93,7 +99,15 @@ Route::get('/collegeintershipmanager/matched-list', function () {
 
 //  foreach ($students as $student) {
     // map spe 1
-    $studWithSpe1List = \DB::select("select u.iduser,st.name,st.studid,a.speciality1 from user u inner join student st on st.Student_ID = u.iduser inner join aspiration a on u.iduser = a.StudenID inner join speciality s on (a.speciality1 = s.name or a.speciality1 = s.idSpeciality)");
+    $studWithSpe1List = null;
+
+  if (env('DB_CONNECTION') == 'mysql') {
+    \DB::select("select u.iduser,st.name,st.studid,a.speciality1 from user u inner join student st on st.Student_ID = u.iduser inner join aspiration a on u.iduser = a.StudenID inner join speciality s on (a.speciality1 = s.name or a.speciality1 = s.idSpeciality)");
+  } else if (env('DB_CONNECTION') == 'pgsql') {
+    \DB::select("select u.\"iduser\",st.\"name\",st.\"studid\",a.\"speciality1\" from \"user\" u inner join \"student\" st on st.\"Student_ID\" = u.\"iduser\" inner join \"aspiration\" a on u.\"iduser\" = a.\"StudenID\" inner join speciality s on (a.speciality1 = s.name or a.speciality1 = s.idSpeciality)");
+  }
+
+
 
     foreach ($studWithSpe1List as $studWithSpe1) {
       $compList = \DB::select("select  t.idTopic,c.Name,c.idCompany,s.idSpeciality,s.name,t.content from topic t inner join company c on t.CompanyID = c.idCompany
@@ -302,7 +316,14 @@ Route::get('/student/feedback', function () {
 
 Route::get('/student/topic', function () {
   $userId = \Session::get('loginId');
+
+  $topics = null;
+  if (env('DB_CONNECTION') == 'mysql') {
   $topics = \DB::select("select * from topic t inner join company c on t.CompanyID = c.idCompany inner join speciality s on t.SpecialityID = s.idSpeciality");
+  } else if (env('DB_CONNECTION') == 'pgsql') {
+  $topics = \DB::select("select * from topic t inner join company c on t.\"CompanyID\" = c.\"idCompany\" inner join speciality s on t.\"SpecialityID\" = s.\"idSpeciality\"");
+  }
+
 
   return view('stud-view topic', ['topics' => $topics]);
 });
