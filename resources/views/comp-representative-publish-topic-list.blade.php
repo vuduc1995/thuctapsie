@@ -142,7 +142,11 @@
 <div class="form-register">
   <div class="container-fluid">
       
+      @if (!empty($compId))
+        <h2>topic list</h2>
+      @else
         <h2>topic list {{$compId}}</h2>
+      @endif
 
           <div class="fillin">
             <form class="form-horizontal" method="POST" action="/companyrepresentative/topic-list">
