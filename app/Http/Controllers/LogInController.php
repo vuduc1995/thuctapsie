@@ -20,7 +20,7 @@ class LogInController extends Controller
       $password = $request->password;
       
 
-      $users = \DB::select("select * from user where email = ? and password = ? ",[$email,$password]);
+      $users = \DB::select("select * from \"user\" where email = ? and password = ? ",[$email,$password]);
       if(sizeof($users)!=0){
         $role = $users[0]->role;
         $iduser = $users[0]->iduser;
