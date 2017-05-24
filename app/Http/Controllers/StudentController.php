@@ -166,15 +166,14 @@ class StudentController extends Controller
         $path = public_path() . "/avatar/" . $nameImage .".png";
         file_put_contents($path, $content);
         }
-        try {
-                
+        // try {
 
                 \DB::table('student')->where('Student_ID',$userid )->update(
              array('Student_ID' => $userid, 'name' => $fullname,'gender' => $sex,
                 'studid' => $StudentNumber,'address' => $Address,'email' => $email, 'description' => $description));
-            }catch(\Exception $e){
-                return 0;
-            }
+            // }catch(\Exception $e){
+            //     return 0;
+            // }
 
 
         return 1;
