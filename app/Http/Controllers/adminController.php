@@ -58,7 +58,13 @@ class adminController extends Controller
    public function showMark(Request $request){
         try {
 
+            $mark = null;
+            if (env('DB_CONNECTION') == 'mysql') {
             $mark = \DB::select("select t1.name as student,t1.studid as studentNumber,t4.Name as company,t3.mid_term_mark as midpoint ,t3.final_term_mark as finalpoint,t1.Student_ID as iduser from student as t1,match_info as t2,mark as t3,company as t4 where t4.idCompany = t2.CompanyID  and  t1.Student_ID = t2.StudentID and t3.StudentID = t2.StudentID");
+            } else if (env('DB_CONNECTION') == 'pgsql') {
+            $mark = \DB::select("select t1.name as student,t1.studid as \"studentNumber\",t4.\"Name\" as company,t3.mid_term_mark as midpoint ,t3.final_term_mark as finalpoint,t1.\"Student_ID\" as iduser from student as t1,match_info as t2,mark as t3,company as t4 where t4.\"idCompany\" = t2.\"CompanyID\"  and  t1.\"Student_ID\" = t2.\"StudentID\" and t3.\"StudentID\" = t2.\"StudentID\"");
+            }
+
                 foreach ($mark as $key => $mark1) {
                 
                 $i = $mark1->midpoint * 0.3 + $mark1->finalpoint * 0.7;
@@ -123,7 +129,12 @@ class adminController extends Controller
 
    public function showUser(Request $request){
         try {
+              $users = null;
+                if (env('DB_CONNECTION') == 'mysql') {
               $users = \DB::select("select * from user where role != 1");
+                } else if (env('DB_CONNECTION') == 'pgsql') {
+              $users = \DB::select("select * from \"user\" where role != 1");
+                }
                 
                 $array = json_decode(json_encode($users), true);
                 

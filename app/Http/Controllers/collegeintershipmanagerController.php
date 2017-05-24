@@ -76,7 +76,12 @@ class collegeintershipmanagerController extends Controller
 
         try {
                 
+                $user = null;
+                if (env('DB_CONNECTION') == 'mysql') {
                 $user = \DB::select("SELECT t1.name as studentName,t1.studid as studentID,t2.Name as companyName,t3.name as specName,t5.content as topic,t4.idMatch as idMatch from student as t1,company as t2,speciality as t3,match_info as t4,topic as t5 where  t1.Student_ID = t4.StudentID and t2.idCompany = t4.CompanyID and t3.idSpeciality = t4.SpecialityID and t4.SpecialityID = t5.SpecialityID");
+                } else if (env('DB_CONNECTION') == 'pgsql') {
+                $user = \DB::select("SELECT t1.name as \"studentName\",t1.studid as \"studentID\",t2.\"Name\" as \"companyName\",t3.name as \"specName\",t5.content as topic,t4.\"idMatch\" as \"idMatch\" from student as t1,company as t2,speciality as t3,match_info as t4,topic as t5 where  t1.\"Student_ID\" = t4.\"StudentID\" and t2.\"idCompany\" = t4.\"CompanyID\" and t3.\"idSpeciality\" = t4.\"SpecialityID\" and t4.\"SpecialityID\" = t5.\"SpecialityID\"");
+                }
                  return view('col-manager-matched-info',['users'=> $user]);
                  
             }catch(\Exception $e){
@@ -95,7 +100,12 @@ class collegeintershipmanagerController extends Controller
 
         try {
                 
+                $mark = null;
+                if (env('DB_CONNECTION') == 'mysql') {
                 $mark = \DB::select("select t1.name as student,t1.studid as studentNumber,t4.Name as company,t3.mid_term_mark as midpoint ,t3.final_term_mark as finalpoint from student as t1,match_info as t2,mark as t3,company as t4 where t4.idCompany = t2.CompanyID  and  t1.Student_ID = t2.StudentID and t3.StudentID = t2.StudentID");
+                } else if (env('DB_CONNECTION') == 'pgsql') {
+                $mark = \DB::select("select t1.name as student,t1.studid as \"studentNumber\",t4.\"Name\" as company,t3.mid_term_mark as midpoint ,t3.final_term_mark as finalpoint from student as t1,match_info as t2,mark as t3,company as t4 where t4.\"idCompany\" = t2.\"CompanyID\"  and  t1.\"Student_ID\" = t2.\"StudentID\" and t3.\"StudentID\" = t2.\"StudentID\"");
+                }
                 foreach ($mark as $key => $mark1) {
                 
                 $i = $mark1->midpoint * 0.3 + $mark1->finalpoint * 0.7;
@@ -134,7 +144,12 @@ class collegeintershipmanagerController extends Controller
              $test = array();
  
 
+                $studWithSpe1List = null;
+                if (env('DB_CONNECTION') == 'mysql') {
                 $studWithSpe1List = \DB::select("SELECT t2.name as studentName,t2.studid as studentNumber,t3.Name as company,t4.name as specialityName,t1.topic as content,t2.Student_ID as iduser,t1.CompanyID as idCompany FROM match_info as t1,student as t2,company as t3 ,speciality as t4 where t1.CompanyID = t3.idCompany and t2.Student_ID = t1.StudentID and t4.idSpeciality = t1.SpecialityID  ");
+                } else if (env('DB_CONNECTION') == 'pgsql') {
+                $studWithSpe1List = \DB::select("SELECT t2.name as \"studentName\",t2.studid as \"studentNumber\",t3.\"Name\" as company,t4.name as \"specialityName\",t1.topic as content,t2.\"Student_ID\" as iduser,t1.\"CompanyID\" as \"idCompany\" FROM match_info as t1,student as t2,company as t3 ,speciality as t4 where t1.\"CompanyID\" = t3.\"idCompany\" and t2.\"Student_ID\" = t1.\"StudentID\" and t4.\"idSpeciality\" = t1.\"SpecialityID\"  ");
+                }
 
                 foreach ($studWithSpe1List as $studWithSpe1) {
 
@@ -293,8 +308,18 @@ class collegeintershipmanagerController extends Controller
 
             // Log::info(${'topicList_'.$i}.' vs '.${'iduser_'.$i}.' vs '.${'idCompany_'.$i}.' vs '.${'speciality_'.$i});
 
+            $cur = null;
+            if (env('DB_CONNECTION') == 'mysql') {
             $cur = \DB::select("select * from match_info where CompanyID = ? and StudentID = ?",[${'idCompany_'.$i},${'iduser_'.$i}]);
+            } else if (env('DB_CONNECTION') == 'pgsql') {
+            $cur = \DB::select("select * from match_info where \"CompanyID\" = ? and \"StudentID\" = ?",[${'idCompany_'.$i},${'iduser_'.$i}]);
+            }
+            $topic = null;
+            if (env('DB_CONNECTION') == 'mysql') {
             $topic = \DB::select("select * from topic where idTopic = ?",[${'topicList_'.$i}]);
+            } else if (env('DB_CONNECTION') == 'pgsql') {
+            $topic = \DB::select("select * from topic where \"idTopic\" = ?",[${'topicList_'.$i}]);
+            }
             if (sizeof($cur) == 0) {
                 \DB::table('match_info')->insert(
                 array('CompanyID' => ${'idCompany_'.$i},

@@ -240,25 +240,46 @@ Route::get('/collegeintershipmanager/duyet-topic-1', function () {
 Route::get('/collegeintershipmanager/duyet-topic-2/{id}', function ($id) {
   $company = \DB::table('company')->where('idCompany',$id )->first();
   $represent = \DB::table('companyrepresentative')->where('CompanyID',$id )->first();
+  $topics = null;
+  if (env('DB_CONNECTION') == 'mysql') {
   $topics = \DB::select("select * from topic t inner join speciality s on t.SpecialityID = s.idSpeciality where t.CompanyID = ?", [$id]);
+  } else if (env('DB_CONNECTION') == 'pgsql') {
+  $topics = \DB::select("select * from topic t inner join speciality s on t.\"SpecialityID\" = s.\"idSpeciality\" where t.\"CompanyID\" = ?", [$id]);
+  }
   return view('col-manager-duyet-topic-2', ['company' => $company, 'represent' => $represent, 'topics' => $topics]);
 });
 
 Route::post('/collegeintershipmanager/matched-list',array('uses'=>'collegeintershipmanagerController@updateMatchedList'));
 
 Route::get('/collegeintershipmanager/matched-list', function () {
+  $students = null;
+  if (env('DB_CONNECTION') == 'mysql') {
   $students = \DB::select("select * from user where role = 2");
+  } else if (env('DB_CONNECTION') == 'pgsql') {
+  $students = \DB::select("select * from \"user\" where role = 2");
+  }
 
   $test = array();
 
 
 
 
+    $studWithSpe1List = null;
+    if (env('DB_CONNECTION') == 'mysql') {
     $studWithSpe1List = \DB::select("select u.iduser,st.name,st.studid,a.speciality1 from user u inner join student st on st.Student_ID = u.iduser inner join aspiration a on u.iduser = a.StudenID inner join speciality s on (a.speciality1 = s.name or a.speciality1 = s.idSpeciality)");
+    } else if (env('DB_CONNECTION') == 'pgsql') {
+    $studWithSpe1List = \DB::select("select u.iduser,st.name,st.studid,a.speciality1 from \"user\" u inner join student st on st.\"Student_ID\" = u.iduser inner join aspiration a on u.iduser = a.\"StudenID\" inner join speciality s on (a.speciality1 = s.name or a.speciality1 = s.\"idSpeciality\")");
+    }
 
     foreach ($studWithSpe1List as $studWithSpe1) {
+      $compList = null;
+      if (env('DB_CONNECTION') == 'mysql') {
       $compList = \DB::select("select  t.idTopic,c.Name,c.idCompany,s.idSpeciality,s.name,t.content from topic t inner join company c on t.CompanyID = c.idCompany
 inner join speciality s on t.SpecialityID = s.idSpeciality where s.name = ? or s.idSpeciality = ?", [$studWithSpe1->speciality1, $studWithSpe1->speciality1]);
+      } else if (env('DB_CONNECTION') == 'pgsql') {
+      $compList = \DB::select("select  t.\"idTopic\",c.\"Name\",c.\"idCompany\",s.\"idSpeciality\",s.name,t.content from topic t inner join company c on t.\"CompanyID\" = c.\"idCompany\"
+inner join speciality s on t.\"SpecialityID\" = s.\"idSpeciality\" where s.name = ? or s.\"idSpeciality\" = ?", [$studWithSpe1->speciality1, $studWithSpe1->speciality1]);
+      }
 
       $t = $studWithSpe1->speciality1;
       Log::info('test '.$t);

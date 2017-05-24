@@ -20,7 +20,12 @@ class LogInController extends Controller
       $password = $request->password;
       
 
+      $users = null;
+        if (env('DB_CONNECTION') == 'mysql') {
       $users = \DB::select("select * from user where email = ? and password = ? ",[$email,$password]);
+        } else if (env('DB_CONNECTION') == 'pgsql') {
+      $users = \DB::select("select * from \"user\" where email = ? and password = ? ",[$email,$password]);
+        }
       if(sizeof($users)!=0){
         $role = $users[0]->role;
         $iduser = $users[0]->iduser;

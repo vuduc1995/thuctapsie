@@ -178,7 +178,12 @@ class companyinstructorController extends Controller
      public function showMark($id)
     {
         try {
+            $data = null;
+                if (env('DB_CONNECTION') == 'mysql') {
             $data = \DB::select("SELECT * FROM reportcompanyinstrutor,reportdetail where reportcompanyinstrutor.conent_report = reportdetail.idreportdetail and reportcompanyinstrutor.StudentID = ".$id);
+                } else if (env('DB_CONNECTION') == 'pgsql') {
+            $data = \DB::select("SELECT * FROM reportcompanyinstrutor,reportdetail where reportcompanyinstrutor.conent_report = reportdetail.idreportdetail and reportcompanyinstrutor.\"StudentID\" = ".$id);
+                }
               
               return view('comp-instructor-mark-2', [
                 'id' => $id,'data' => $data[0] ]);
@@ -192,7 +197,12 @@ class companyinstructorController extends Controller
      public function showRate($id)
     {
         try {
-            $data = \DB::select("SELECT * FROM sie.rate where StudentID = ".$id);
+            $data = null;
+            if (env('DB_CONNECTION') == 'mysql') {
+            $data = \DB::select("SELECT * FROM rate where StudentID = ".$id);
+            } else if (env('DB_CONNECTION') == 'pgsql') {
+            $data = \DB::select("SELECT * FROM rate where \"StudentID\" = ".$id);
+            }
               
               return view('comp-instructor-rate-2', [
                 'id' => $id,'data' => $data[0] ]);

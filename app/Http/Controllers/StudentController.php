@@ -380,7 +380,13 @@ class StudentController extends Controller
     public function showTopicList(Request $request)
     {   try{
 
+        $data = null;
+        if (env('DB_CONNECTION') == 'mysql') {
         $data = \DB::select("SELECT t1.idTopic,t1.content as topic,t2.Name as company,t3.name as speciality FROM topic as t1,company as t2,speciality as t3 where t1.SpecialityID = t3.idSpeciality and t2.idCompany = t1.CompanyID ");
+        } else if (env('DB_CONNECTION') == 'pgsql') {
+        $data = \DB::select("SELECT t1.\"idTopic\",t1.content as topic,t2.\"Name\" as company,t3.name as speciality FROM topic as t1,company as t2,speciality as t3 where t1.\"SpecialityID\" = t3.\"idSpeciality\" and t2.\"idCompany\" = t1.\"CompanyID\" ");
+        }
+
         return view('stud-topic',['users'=> $data]);
          }catch(\Exception $e){
                return  view('stud-topic');
