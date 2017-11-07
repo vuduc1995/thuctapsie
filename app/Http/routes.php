@@ -91,7 +91,13 @@ Route::post('/companyinstructor/upOutline',array('uses'=>'companyinstructorContr
 Route::get('/companyinstructor/outline',array('uses'=>'companyinstructorController@showOutline'));
 Route::post('/companyinstructor/upRate',array('uses'=>'companyinstructorController@upRate'));
 Route::post('/companyinstructor/upTimeSheet',array('uses'=>'companyinstructorController@upTimeSheet'));
+Route::get('/companyinstructor/chat',array('uses'=>'ChatController@chat'));
+Route::post('/companyinstructor/chat',array('uses'=>'ChatController@send'));
+Route::get('/companyinstructor/chat/read',array('uses'=>'ChatController@read'));
 
+Route::get('/student/chat/read',array('uses'=>'ChatController@read'));
+Route::get('/student/chat',array('uses'=>'ChatController@chat'));
+Route::post('/student/chat',array('uses'=>'ChatController@send'));
 Route::get('/student', function () {
    return view('stud-home');
 });

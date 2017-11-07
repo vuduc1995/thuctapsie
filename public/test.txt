@@ -19,3 +19,16 @@ DB_PORT=3306
 DB_DATABASE=sie
 DB_USERNAME=root
 DB_PASSWORD=matkhau123
+
+
+Host: ec2-107-21-108-204.compute-1.amazonaws.com
+Database: dc2gr73jte3t2t
+User
+pzjyzckazlcciu
+Port
+5432
+Password
+af7ea0d32b422199fcdb9815d840c08e17d79a14df962a2055d3d2a7d7b74746
+URI
+postgres://pzjyzckazlcciu:af7ea0d32b422199fcdb9815d840c08e17d79a14df962a2055d3d2a7d7b74746@ec2-107-21-108-204.compute-1.amazonaws.com:5432/dc2gr73jte3t2tHeroku CLI
+heroku pg:psql postgresql-reticulated-99132 --app thuctapsie
