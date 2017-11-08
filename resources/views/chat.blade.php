@@ -58,6 +58,73 @@ function slide() {
     }, 3000); // repeat forever, polling every 3 seconds
 }
 
+function openMail123(id,status,header,message) {
+  var i;
+  var x = document.getElementsByClassName("person");
+  for (i = 0; i < x.length; i++) {
+     x[i].style.display = "none";
+  }
+  x = document.getElementsByClassName("test");
+  for (i = 0; i < x.length; i++) {
+     x[i].className = x[i].className.replace(" w3-light-grey", "");
+  }
+  // document.getElementById(personName).style.display = "block";
+  event.currentTarget.className += " w3-light-grey";
+
+  var element = document.getElementById("MainContent123");
+  element.innerHTML = '';
+
+
+  // cuc hien thi email
+  var big = document.createElement("div");
+  var br = document.createElement("br");
+  big.appendChild(br);
+  var img = document.createElement("img");
+  img.setAttribute('class', 'w3-round w3-animate-top aaaa');
+  img.setAttribute('src', 'http://icons.iconarchive.com/icons/saki/nuoveXT/128/Small-arrow-down-fast-icon.png');
+  img.setAttribute('style', 'width:20%;');
+  var h5 = document.createElement("h5");
+  h5.setAttribute('class', 'w3-opacity');
+  h5.innerHTML = '[Mail] ' + header;
+  big.appendChild(img);
+  big.appendChild(h5);
+
+  var h4 = document.createElement('h4');
+  var h4_i = document.createElement('i');
+  h4_i.setAttribute('class', 'fa fa-clock-o');
+  var node = document.createTextNode(' From John Doe, Sep 23, 2015.');
+  h4.appendChild(h4_i);
+  h4.appendChild(node);
+  big.appendChild(h4);
+
+  var a = document.createElement('a');
+  a.setAttribute('class', 'w3-button w3-light-grey');
+  a.innerHTML = 'Reply';
+  var a_i = document.createElement('i');
+  a_i.setAttribute('class', 'w3-margin-left fa fa-mail-reply');
+  a.appendChild(a_i);
+  big.appendChild(a);
+
+  a = document.createElement('a');
+  a.setAttribute('class', 'w3-button w3-light-grey');
+  a.innerHTML = 'Forward';
+  var a_i = document.createElement('i');
+  a_i.setAttribute('class', 'w3-margin-left fa fa-arrow-right');
+  a.appendChild(a_i);
+  big.appendChild(a);
+
+  var hr = document.createElement("hr");
+  big.appendChild(hr);
+  var para = document.createElement("p");
+  var node = document.createTextNode(message);
+  para.appendChild(node);
+  big.appendChild(para);
+
+  big.style.display = "block";
+
+  element.appendChild(big);
+}
+
 function readMessage() {
     $.ajax({
         url:'/{{$subdomain}}/chat/read',
@@ -87,6 +154,7 @@ function readMessage() {
 
         var big = document.createElement("a");
         big.setAttribute('class', 'w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey');
+        big.setAttribute('onclick', "openMail123("+object[i].id+",'"+object[i].status+"','"+object[i].header+"','"+object[i].message+"')");
         var img = document.createElement("img");
         img.setAttribute('class', 'w3-round w3-margin-right');
         img.setAttribute('src', 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/256/sign-check-icon.png');
@@ -198,6 +266,7 @@ function readMessage() {
 <i class="fa fa-bars w3-button w3-white w3-hide-large w3-xlarge w3-margin-left w3-margin-top" onclick="w3_open()"></i>
 <a href="javascript:void(0)" class="w3-hide-large w3-red w3-button w3-right w3-margin-top w3-margin-right" onclick="document.getElementById('id01').style.display='block'"><i class="fa fa-pencil"></i></a>
 
+<div id="MainContent123">
 <div id="Borge" class="w3-container person">
   <br>
   <img class="w3-round  w3-animate-top" src="/w3images/avatar3.png" style="width:20%;">
@@ -235,6 +304,7 @@ function readMessage() {
   <p>That's it!</p>
 </div>
      
+</div>
 </div>
 
 <script>
