@@ -13,143 +13,10 @@
     $users->phone= '';
   @endphp
 @endif
-<!DOCTYPE html>
-<html lang="en">
-<head>
 
-  <meta charset= "utf-8">
-    <title>Student Report</title>
-
-     <link rel ="stylesheet" type="text/css" href ="{{ URL::asset('css/font-awesome.min.css')}}" />
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('data/stud-manage-cv/css/styles.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap.min.css') }}">
-    <script type="text/javascript" src="{{ URL::asset('js/jquery.js') }}"></script>
-    <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
-
-</head>
-
+@include('includes.head', array('cssFolder' => 'stud-view-topic'))
 <body>
-
-<header id="header">
-
-  <div class="header-main">
-    <div class="header-main-content">
-      <div class="container-fluid">
-        <div class="container row">
-          <div class="col-sm-2">
-            <div id="logo"><img src="{{ URL::asset('images/logo60nambk.png') }}" width="165" height="77" alt="Klass">
-            </div>
-            
-            
-          </div>
-
-          <div class="breadcrum col-sm-8">
-              <p>hanoi university of science and technology</p>
-              <h1>school of international education</h1>  
-          </div>
-            
-            <div class="user-menu col-sm-2" style="margin-left:0px" >   
-            <div class="dropdown wrap-item">
-              <ul class="btn dropdown-toggle menubar" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-               <li class="">  
-                  <a class ="action-menu-toggle" href="#">
-                  <span class ="userbutton">
-                    <span class ="usertext">Student
-                    </span>
-                    <span class ="avatar">
-                      <span class ="ava current">
-
-                          <img src={{ URL::asset('images/logo.png') }} alt="avatar"><i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                      </span>
-                    </span>
-                  </span>
-                  </a>
-                </li>
-            </ul>
-
-              <ul class="dropdown-menu hidemenu" aria-labelledby="dropdownMenu1">
-               <li>
-                  <a class ="menu-action" href="/student">
-                    <i class="fa fa-home" aria-hidden="true"></i>
-                    <span class="action-text">Homepage</span>
-                  </a>
-                </li>
-
-                <li>
-                  <a class ="menu-action" href="/student/edit-profile">
-                    <i class="fa fa-user-md" aria-hidden="true"></i>
-                    <span class="action-text">Profile</span>
-                  </a>
-                </li>
-
-                <li role="separator" class="divider"></li>
-
-                <li class=" sign-out">
-                  <a class ="menu-action" href="/logout">
-                    <i class="fa fa-sign-out" aria-hidden="true"></i>
-                    <span class="action-text">Sign Out</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>  
-            <div class="clearfix"></div>
-        </div>
-             
-      </div>
-    </div>
-  </div>
-
-    <div class="header-main-menubar">
-  
-
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
-  
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="/student"><i class="fa fa-home" aria-hidden="true"></i> HOME<span class="sr-only">(current)</span></a></li>
-        
-        <li class="dropdown" id="formcv">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Form <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="/student/CV">CV</a></li>
-            <li><a href="/student/registration">Registration</a></li>
-          </ul>
-        </li>
-
-      
-
-        <li class="intern dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Intern <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="/student/topic">Topic</a></li>
-            <li><a href="/student/report">Report</a></li>
-            <li><a href="/student/feedback">Feedback</a></li>
-            <li><a href="/student/status">Status</a></li>
-            <li><a href="/student/mark">Mark</a></li>
-          </ul>
-        </li>
-
-        
-      </ul>
-      
-      
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-  
-    </div>
-
-  </div>
-  
-</header>
-<!--E.O.Header--><!--Custom theme header-->
-
-<!--E.O.Slider-->    
-    
-    
+@include('includes.header', array('subdomain'=>'student')) 
     
 </div>
 <!--Custom theme slider-->
@@ -163,12 +30,12 @@
               <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">Fullname</label>
                 <div class="col-sm-4">
-                  <input class="form-control" id="name" placeholder="Fullname" name="fullname" @if (isset($users)) value="{{$users->fullname}}" @endif>
+                  <input class="form-control" id="name" placeholder="Fullname" name="fullname" @if (isset($userData)) value="{{$userData->fullname}}" @endif>
                 </div>
 
                 <label for="class" class="col-sm-2 control-label">Class</label>
                 <div class="col-sm-3">
-                  <input class="form-control" id="class" placeholder="Class" name="class" @if (isset($users)) value="{{$users->class}}" @endif>
+                  <input class="form-control" id="class" placeholder="Class" name="class" @if (isset($userData)) value="{{$userData->class}}" @endif>
                 </div>
               </div>
 
@@ -177,10 +44,10 @@
                   <div class="radio radio-danger">
                     <label style="font-weight: bold"> Gender  </label>
                     <label style="margin-left: 40px">
-                      <input type="radio" name="survey" value="male" @if (isset($users)) {{$users->gender == 'male' ? "checked=checked" : ''}} @endif> Male
+                      <input type="radio" name="survey" value="male" @if (isset($userData)) {{$userData->gender == 'male' ? "checked=checked" : ''}} @endif> Male
                     </label>
                     <label style="margin-left: 40px">
-                      <input type="radio" name="survey" value="female" @if (isset($users)) {{$users->gender == 'female' ? "checked=checked" : ''}} @endif> Female
+                      <input type="radio" name="survey" value="female" @if (isset($userData)) {{$userData->gender == 'female' ? "checked=checked" : ''}} @endif> Female
                     </label>
                   </div>
                 </div>
@@ -190,7 +57,7 @@
               <div class="form-group">
                 <label for="idnumber" class="col-sm-2 control-label" >Student's number</label>
                 <div class="col-sm-3">
-                  <input type="text" class="form-control" id="idnumber" placeholder="Student's number" name="stdnumber" @if (isset($users))value="{{$users->stdid}}" @endif>
+                  <input type="text" class="form-control" id="idnumber" placeholder="Student's number" name="stdnumber" @if (isset($userData))value="{{$userData->stdid}}" @endif>
                 </div>
               </div>
 
@@ -198,40 +65,40 @@
               <div class="form-group">
                 <label for="address" class="col-sm-2 control-label">Address</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" id="address" placeholder="Address" name="address" @if (isset($users)) value="{{$users->address}}" @endif>
+                  <input type="text" class="form-control" id="address" placeholder="Address" name="address" @if (isset($userData)) value="{{$userData->address}}" @endif>
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="phonenumber" class="col-sm-2 control-label">Phone</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" id="phonenumber" placeholder="phonenumber" name="phonenumber" @if (isset($users)) value="{{$users->phone}}" @endif>
+                  <input type="text" class="form-control" id="phonenumber" placeholder="phonenumber" name="phonenumber" @if (isset($userData)) value="{{$userData->phone}}" @endif>
                 </div>
 
                 <label for="email" class="col-sm-2 control-label">Email</label>
                 <div class="col-sm-3">
-                  <input type="email" class="form-control" id="email" placeholder="Email" name="email" @if (isset($users)) value="{{$users->email}}" @endif>
+                  <input type="email" class="form-control" id="email" placeholder="Email" name="email" @if (isset($userData)) value="{{$userData->email}}" @endif>
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="language" class="col-sm-2 control-label">Foreign Language</label>
                 <div class="col-sm-4">
-                  <input type="text" class="form-control" id="type" placeholder="Certification" name="certification" @if (isset($users)) value="{{$users->foreignLanguage}}" @endif>
+                  <input type="text" class="form-control" id="type" placeholder="Certification" name="certification" @if (isset($userData)) value="{{$userData->foreignLanguage}}" @endif>
                 </div>
                  </div>
 
                  <div class="form-group">
                   <label for="skills" class="col-sm-2 control-label">Skills</label>
                   <div class="col-sm-9">
-                  <textarea class="form-control" col="7" rows="7" name="skills" >@if (isset($users)) {{$users->skills}} @endif</textarea>
+                  <textarea class="form-control" col="7" rows="7" name="skills" >@if (isset($userData)) {{$userData->skills}} @endif</textarea>
                   </div>
                  </div>
 
                  <div class="form-group">
                   <label for="learning" class="col-sm-2 control-label">Experience</label>
                   <div class="col-sm-9">
-                  <textarea class="form-control" col="7" rows="7" name="experience" >@if (isset($users))  {{$users->experience}} @endif</textarea>
+                  <textarea class="form-control" col="7" rows="7" name="experience" >@if (isset($userData))  {{$userData->experience}} @endif</textarea>
                   </div>
                  </div>
 
@@ -273,30 +140,7 @@
   });;
 });
     </script>
-<footer id="footer">    
-  <div class="footer-main">
-    <div class="container-fluid">
-      <div class="row-fluid">
 
-          <div class="infoarea">
-            <div class="footer-logo">
-              <a href="hust">
-                <img src="{{ URL::asset('images/logo.png') }}" width="89" height="56" alt="footer-logo">
-              </a>
-            </div>
-        
-            <div class="info">
-              <p> Add: Room 201, D7 Building, HUST | No.1, Dai Co Viet Street, Hanoi, Vietnam.</p>
-              <p> Email: sievn@hust.edu.vn</p>
-              <p> Copyright© <b>School of International Education | HUST</b></p>
-            </div>
-
-
-        
-      </div>
-    </div>
-  </div>
-</footer>
-<!--E.O.Footer-->
+@include('includes.footer')
 
 </body>

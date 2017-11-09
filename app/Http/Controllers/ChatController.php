@@ -24,32 +24,82 @@ class ChatController extends Controller
         if(is_null($userSendTo)){
             return 0;
         } else {
-            \DB::table('chat')->insert(array('iduser' => $userSendTo->iduser, 'iduser_sender' => $iduser,'status' => 'unread','header' => $subject,
+            \DB::table('chat')->insert(array('iduser' => $userSendTo->iduser, 'iduser_sender' => $iduser, 'status' => 'unread','header' => $subject,
                 'message' => $content));
 
             return 1;
         }
     }
 
+    public function getSenderInfo($iduser) {
+        $user = \DB::table('user')->where('iduser',$iduser)->first();
+        $senderName = "";
+        $senderAvatar = 'avatar/avatar_' .$iduser.'.png';
+        if ($user->role == 1) {
+            //$admin = \DB::table('user')->where('iduser',$iduser)->first();
+            $senderName = "admin";
+        } else if ($user->role == 2) {
+            $student = \DB::table('student')->where('Student_ID',$iduser)->first();
+            $senderName = $student->name;
+            $senderAvatar = 'avatar/avatar_' .$student->Student_ID.'.png'; // wtfffff
+//            Log::info("aaa:".$senderName.",".$senderAvatar);
+        } else if ($user->role == 3) {
+            $collegeinstructor = \DB::table('collegeinstructor')->where('CI_ID',$iduser)->first();
+            $senderName = $collegeinstructor->name;
+        } else if ($user->role == 4) {
+            $collegeintershipmanager = \DB::table('collegeintershipmanager')->where('CIM_ID',$iduser)->first();
+            $senderName = $collegeintershipmanager->name;
+        } else if ($user->role == 5) {
+            $companyrepresentative = \DB::table('companyrepresentative')->where('CR_ID',$iduser)->first();
+            $senderName = $companyrepresentative->name;
+        } else if ($user->role == 6) {
+            $companyinstructor = \DB::table('companyinstructor')->where('CI_ID',$iduser)->first();
+            $senderName = $companyinstructor->name;
+        }
+        return ['senderName' => $senderName, 'senderAvatar' => $senderAvatar ];
+    }
+
     public function read(Request $request)
     {
         $iduser = \Session::get('loginId');
+        $result = "[";
+        $user = \DB::table('user')->where('iduser',$iduser)->first();
+        if (!is_null($user) && $user->role == 3) { // collegeinstructor
+            $feedback = \DB::table('comment')->get();
+            if (!is_null($feedback)) {
+                foreach ($feedback as $fb) {
+                    $result = $result."{";
+                    $result = $result."\"id\":".$fb->idComment.",";
+                    $result = $result."\"status\":\"\",";
+                    $result = $result."\"header\":\"".$fb->Type."\",";
+                    $result = $result."\"message\":\"".$fb->Content."\",";
+                    $result = $result."\"isFeedback\":true,";
+                    $result = $result."\"studentId\":".$fb->StudentID.",";
+                    $result = $result."\"senderName\":\"".self::getSenderInfo($fb->StudentID)['senderName']."\",";
+                    $result = $result."\"senderAvatar\":\"".self::getSenderInfo($fb->StudentID)['senderAvatar']."\"";
+                    $result = $result."},";
+                }
+            }
+        }
+
+
 
         $chatHistory = \DB::table('chat')->where('iduser',$iduser)->get();
         if(is_null($chatHistory)){
             return 0;
         } else {
-            $result = "[";
             foreach ($chatHistory as $chat) {
                 if (is_null($chat)) {
                     Log::info("null");
                 } else {
-            $result = $result."{";
-            $result = $result."\"id\":".$chat->iduser.',';
-            $result = $result."\"status\":\"".$chat->status."\",";
-            $result = $result."\"header\":\"".$chat->header."\",";
-            $result = $result."\"message\":\"".$chat->message."\"";
-            $result = $result."},";
+                    $result = $result."{";
+                    $result = $result."\"id\":".$chat->iduser.',';
+                    $result = $result."\"status\":\"".$chat->status."\",";
+                    $result = $result."\"header\":\"".$chat->header."\",";
+                    $result = $result."\"message\":\"".$chat->message."\",";
+                    $result = $result."\"senderName\":\"".self::getSenderInfo($chat->iduser)['senderName']."\",";
+                    $result = $result."\"senderAvatar\":\"".self::getSenderInfo($chat->iduser)['senderAvatar']."\"";
+                    $result = $result."},";
                 }
             }
             $result = $result."{\"id\":-1,\"status\":\"...\",\"header\":\"...\",\"message\":\"...\"}]";
@@ -70,55 +120,9 @@ class ChatController extends Controller
                 return view('chat',['users'=> $user, 'subdomain' => 'companyinstructor']);
             } else if ($user-> role == 2) {
                 return view('chat',['users'=> $user, 'subdomain' => 'student']);
+            } else if ($user-> role == 3) {
+                return view('chat',['users'=> $user, 'subdomain' => 'collegeinstructor']);
             }
         }
-
-/*
-        $userid = \Session::get('loginId');
-        $fullname = $request->fullname;
-        $class = $request->class;
-        $sex = $request->survey;
-        $StudentNumber = $request->stdnumber;
-        $Address = $request->address;
-        $phonenumber = $request->phonenumber;
-        $email = $request->email;
-        $Certification = $request->certification;
-        $skills = $request->skills;
-        $experience = $request->experience;
-        
-        if($fullname == "" || $class == "" || $sex == ""|| $StudentNumber == ""|| $Address == ""|| $phonenumber == ""|| $email == ""
-            || $Certification == ""|| $skills == ""|| $experience == ""){
-            return 0;
-
-        }
-        try {
-            $user = \DB::table('cv')->where('idStudent',$userid )->first();
-          
-            if(is_null($user)){
-                $function = 0;
-            }else{
-                $function = 1; 
-            }
-            }catch(\Exception $e){
-                return 0;
-            }
-        try {
-            if($function == 0){
-            \DB::table('cv')->insert(
-             array('idStudent' => $userid, 'fullname' => $fullname,'class' => $class,'gender' => $sex,
-                'stdid' => $StudentNumber,'address' => $Address, 'phone' => $phonenumber,'email' => $email, 'foreignLanguage' => $Certification,
-                'skills' => $skills, 'experience' => $experience ));
-            }elseif($function == 1){
-
-                \DB::table('cv')->where('idStudent',$userid )->update(
-             array('idStudent' => $userid, 'fullname' => $fullname,'class' => $class,'gender' => $sex,
-                'stdid' => $StudentNumber,'address' => $Address, 'phone' => $phonenumber,'email' => $email, 'foreignLanguage' => $Certification,
-                'skills' => $skills, 'experience' => $experience ));
-            }
-            }catch(\Exception $e){
-                return 0;
-            }
-
-        return 1;*/
     }
 }

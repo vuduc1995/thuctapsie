@@ -55,10 +55,10 @@ function slide() {
     window.setInterval(function () {
       // read message
       readMessage();
-    }, 3000); // repeat forever, polling every 3 seconds
+    }, 500); // repeat forever, polling every 1/2 seconds
 }
 
-function openMail123(id,status,header,message) {
+function openMail123(id,status,header,message,isFeedback,senderName,senderAvatar) {
   var i;
   var x = document.getElementsByClassName("person");
   for (i = 0; i < x.length; i++) {
@@ -81,18 +81,22 @@ function openMail123(id,status,header,message) {
   big.appendChild(br);
   var img = document.createElement("img");
   img.setAttribute('class', 'w3-round w3-animate-top aaaa');
-  img.setAttribute('src', 'http://icons.iconarchive.com/icons/saki/nuoveXT/128/Small-arrow-down-fast-icon.png');
+  img.setAttribute('src', "{{URL::asset("/")}}" + senderAvatar);
   img.setAttribute('style', 'width:20%;');
   var h5 = document.createElement("h5");
   h5.setAttribute('class', 'w3-opacity');
-  h5.innerHTML = '[Mail] ' + header;
+  if (isFeedback) {
+    h5.innerHTML = '[Feedback] ' + header;
+  } else {
+    h5.innerHTML = '[Mail] ' + header;
+  }
   big.appendChild(img);
   big.appendChild(h5);
 
   var h4 = document.createElement('h4');
   var h4_i = document.createElement('i');
   h4_i.setAttribute('class', 'fa fa-clock-o');
-  var node = document.createTextNode(' From John Doe, Sep 23, 2015.');
+  var node = document.createTextNode(' From '+senderName);//, Sep 23, 2015.');
   h4.appendChild(h4_i);
   h4.appendChild(node);
   big.appendChild(h4);
@@ -139,7 +143,7 @@ function readMessage() {
       var object = JSON.parse(msg);
       var arrayLength = object.length;
 
-      document.getElementById('numOfInbox').textContent = 'Inbox ('+arrayLength+')';
+      document.getElementById('numOfInbox').textContent = 'Inbox ('+(arrayLength-1)+')';
 
       for (var i = 0; i < arrayLength; i++) {
         console.log( "" + object[i].id + "-" + object[i].status+ "-" + object[i].header+ "-" + object[i].message);
@@ -149,35 +153,29 @@ function readMessage() {
       element.innerHTML = '';
       var messageList = "";
       for (var i = 0; i < arrayLength; i++) {
-        messageList = messageList + object[i].id + "-" + object[i].status+ "-" + object[i].header+ "-" + object[i].message + "</br>";
+        if (object[i].id != -1) {
+          messageList = messageList + object[i].id + "-" + object[i].status+ "-" + object[i].header+ "-" + object[i].message + "</br>";
 
 
-        var big = document.createElement("a");
-        big.setAttribute('class', 'w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey');
-        big.setAttribute('onclick', "openMail123("+object[i].id+",'"+object[i].status+"','"+object[i].header+"','"+object[i].message+"')");
-        var img = document.createElement("img");
-        img.setAttribute('class', 'w3-round w3-margin-right');
-        img.setAttribute('src', 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/256/sign-check-icon.png');
-        img.setAttribute('style', 'width:15%;');
-        var para = document.createElement("span");
-        var node = document.createTextNode(object[i].message);
-        para.appendChild(node);
-        big.appendChild(img);
-        big.appendChild(para);
+          var big = document.createElement("a");
+          big.setAttribute('class', 'w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey');
+          big.setAttribute('onclick', "openMail123("+object[i].id+",'"+object[i].status+"','"+object[i].header+"','"+object[i].message+"',"+object[i].isFeedback+",'"+ object[i].senderName + "','"+object[i].senderAvatar + "')");
+          var img = document.createElement("img");
+          img.setAttribute('class', 'w3-round w3-margin-right');
+          img.setAttribute('src', 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/256/sign-check-icon.png');
+          img.setAttribute('style', 'width:15%;');
+          var para = document.createElement("span");
+          var node = document.createTextNode("Mail: "+object[i].header);
+          if (object[i].isFeedback) {
+            node = document.createTextNode("Feedback: "+object[i].header);
+          }
+          para.appendChild(node);
+          big.appendChild(img);
+          big.appendChild(para);
 
-        element.appendChild(big);
+          element.appendChild(big);
+        }
       }
-
-
-
-    //  <a href="javascript:void(0)" class="" onclick="openMail('Jane');w3_close();">
-    //   <div class="w3-container">
-    //     <img class="w3-round w3-margin-right" src="/w3images/avatar5.png" style="width:15%;"><span class="w3-opacity w3-large">Jane Doe</span>
-    //     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-    //   </div>
-    // </a>
-
-
 
     };
 })
@@ -267,6 +265,7 @@ function readMessage() {
 <a href="javascript:void(0)" class="w3-hide-large w3-red w3-button w3-right w3-margin-top w3-margin-right" onclick="document.getElementById('id01').style.display='block'"><i class="fa fa-pencil"></i></a>
 
 <div id="MainContent123">
+<div style="display:none;">
 <div id="Borge" class="w3-container person">
   <br>
   <img class="w3-round  w3-animate-top" src="/w3images/avatar3.png" style="width:20%;">
@@ -304,6 +303,7 @@ function readMessage() {
   <p>That's it!</p>
 </div>
      
+</div>
 </div>
 </div>
 

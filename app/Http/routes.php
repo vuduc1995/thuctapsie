@@ -67,6 +67,9 @@ Route::post('/companyrepresentative/topic/up',array('uses'=>'companyrepresentati
 Route::get('/collegeinstructor/edit-profile',array('uses'=>'collegeinstructorController@showProfileCollegeinstructor'));
 Route::post('/collegeinstructor/upEditProfile',array('uses'=>'collegeinstructorController@editProfile'));
 Route::post('/collegeinstructor/upMark',array('uses'=>'collegeinstructorController@upMark'));
+Route::get('/collegeinstructor/chat',array('uses'=>'ChatController@chat'));
+Route::post('/collegeinstructor/chat',array('uses'=>'ChatController@send'));
+Route::get('/collegeinstructor/chat/read',array('uses'=>'ChatController@read'));
 
 Route::get('/collegeintershipmanager/edit-profile',array('uses'=>'collegeintershipmanagerController@showProfileCollegeinstructor'));
 Route::post('/collegeintershipmanager/upEditProfile',array('uses'=>'collegeintershipmanagerController@editProfile'));
@@ -99,7 +102,10 @@ Route::get('/student/chat/read',array('uses'=>'ChatController@read'));
 Route::get('/student/chat',array('uses'=>'ChatController@chat'));
 Route::post('/student/chat',array('uses'=>'ChatController@send'));
 Route::get('/student', function () {
-   return view('stud-home');
+  $iduser = \Session::get('loginId');
+  $user = \DB::table('student')->where('Student_ID',$iduser)->first();
+  $user->id = $iduser;
+  return view('stud-home',['users'=> $user]);
 });
 
 Route::get('/admin/auto',array('uses'=>'adminController@matchInfo'));
@@ -121,7 +127,10 @@ Route::get('/admin/auto-match', function () {
 });
 
 Route::get('/collegeinstructor', function () {
-   return view('col-instructor-home');
+  $iduser = \Session::get('loginId');
+  $user = \DB::table('collegeinstructor')->where('CI_ID',$iduser)->first();
+  $user->id = $iduser;
+  return view('col-instructor-home',['users'=> $user]);
 });
 
 
@@ -161,12 +170,19 @@ Route::get('/companyinstructor/rate', function () {
 
 
 Route::get('/student/feedback', function () {
-   return view('stud-feedback');
+  $iduser = \Session::get('loginId');
+  $user = \DB::table('student')->where('Student_ID',$iduser)->first();
+  $user->id = $iduser;
+  return view('stud-feedback',['users'=> $user]);
 });
 
 Route::get('/collegeinstructor/mark-1', function () {
  $students = \DB::select("select * from student");
  $list = array();
+
+  $iduser = \Session::get('loginId');
+  $user = \DB::table('collegeinstructor')->where('CI_ID',$iduser)->first();
+  $user->id = $iduser;
 
  foreach ($students as $student) {
   $list[] = array (
@@ -175,7 +191,7 @@ Route::get('/collegeinstructor/mark-1', function () {
     'studnumber'=>$student->studid,
     'class'=>$student->class) ;
   } 
-  return view('col-instructor-mark-1', ['students' =>$list]);
+  return view('col-instructor-mark-1', ['students' =>$list, 'users'=> $user]);
 });
 
 Route::get('/companyinstructor/mark-1', function () {

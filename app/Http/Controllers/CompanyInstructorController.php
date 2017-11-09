@@ -175,22 +175,24 @@ class companyinstructorController extends Controller
 
     }
 
-     public function showMark($id)
-    {
-        try {
-            $data = null;
-                if (env('DB_CONNECTION') == 'mysql') {
-            $data = \DB::select("SELECT * FROM reportcompanyinstrutor,reportdetail where reportcompanyinstrutor.conent_report = reportdetail.idreportdetail and reportcompanyinstrutor.StudentID = ".$id);
-                } else if (env('DB_CONNECTION') == 'pgsql') {
-            $data = \DB::select("SELECT * FROM reportcompanyinstrutor,reportdetail where reportcompanyinstrutor.conent_report = reportdetail.idreportdetail and reportcompanyinstrutor.\"StudentID\" = ".$id);
-                }
-              
-              return view('comp-instructor-mark-2', [
-                'id' => $id,'data' => $data[0] ]);
+    public function showMark($id) {
+      $iduser = \Session::get('loginId');
+      $user = \DB::table('collegeinstructor')->where('CI_ID',$iduser)->first();
+      $user->id = $iduser;
+      try {
+        $data = null;
+            if (env('DB_CONNECTION') == 'mysql') {
+        $data = \DB::select("SELECT * FROM reportcompanyinstrutor,reportdetail where reportcompanyinstrutor.conent_report = reportdetail.idreportdetail and reportcompanyinstrutor.StudentID = ".$id);
+            } else if (env('DB_CONNECTION') == 'pgsql') {
+        $data = \DB::select("SELECT * FROM reportcompanyinstrutor,reportdetail where reportcompanyinstrutor.conent_report = reportdetail.idreportdetail and reportcompanyinstrutor.\"StudentID\" = ".$id);
+            }
+          
+          return view('comp-instructor-mark-2', [
+            'id' => $id,'data' => $data[0],'users'=> $user ]);
 
         }catch(\Exception $e){
-                return $e;
-            }
+            return $e;
+        }
 
     }
 

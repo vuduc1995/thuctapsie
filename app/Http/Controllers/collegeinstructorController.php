@@ -87,6 +87,10 @@ class collegeinstructorController extends Controller
     public function showMark($id)
     {
         try {
+          $iduser = \Session::get('loginId');
+          $user = \DB::table('collegeinstructor')->where('CI_ID',$iduser)->first();
+          $user->id = $iduser;
+
             $student = \DB::table('student')->where('id',$id )->first();
               $reports = \DB::table('report')->where('StudentID',$id)->get();;
               $total = count((array)$reports);
@@ -108,7 +112,7 @@ class collegeinstructorController extends Controller
                     }
               }
               return view('col-instructor-mark-2', ['student' => $student, 
-                'id' => $id ,'midReport' => $midtermReport ,'finalReport' => $finalTermReport]);
+                'id' => $id ,'midReport' => $midtermReport ,'finalReport' => $finalTermReport,'users'=> $user]);
 
         }catch(\Exception $e){
                 return $e;
