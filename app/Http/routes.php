@@ -81,7 +81,13 @@ Route::get('/collegeintershipmanager/schedule',array('uses'=>'collegeintershipma
 
 Route::get('/companyrepresentative/edit-profile',array('uses'=>'companyrepresentativeController@showProfileCompanyrepresentative'));
 Route::post('/companyrepresentative/upEditProfile',array('uses'=>'companyrepresentativeController@editProfile'));
+Route::get('/companyrepresentative/chat',array('uses'=>'ChatController@chat'));
+Route::post('/companyrepresentative/chat',array('uses'=>'ChatController@send'));
+Route::get('/companyrepresentative/chat/read',array('uses'=>'ChatController@read'));
 
+Route::get('/admin/chat',array('uses'=>'ChatController@chat'));
+Route::post('/admin/chat',array('uses'=>'ChatController@send'));
+Route::get('/admin/chat/read',array('uses'=>'ChatController@read'));
 Route::post('/admin/upAddUser',array('uses'=>'adminController@upAddUser'));
 Route::post('/admin/upUser',array('uses'=>'adminController@upUser'));
 Route::post('/admin/upMark',array('uses'=>'adminController@upMark'));
@@ -110,8 +116,14 @@ Route::get('/student', function () {
 
 Route::get('/admin/auto',array('uses'=>'adminController@matchInfo'));
 
+
+
 Route::get('/admin', function () {
-   return view('admin-home');
+  $iduser = \Session::get('loginId');
+  $user = new StdClass();
+  $user->id = 1;
+  $user->name = 'Admin';
+   return view('admin-home', ['users' => $user]);
 });
 
 Route::get('/admin/add-user', function () {
@@ -123,11 +135,16 @@ Route::get('/admin/add-user', function () {
 // });
 
 Route::get('/admin/auto-match', function () {
-   return view('admin-auto');
+  $iduser = \Session::get('loginId');
+  $user = new StdClass();
+  $user->id = 1;
+  $user->name = 'Admin';
+   return view('admin-auto', ['users' => $user]);
 });
 
 Route::get('/collegeinstructor', function () {
   $iduser = \Session::get('loginId');
+  Log::info("id:".$iduser);
   $user = \DB::table('collegeinstructor')->where('CI_ID',$iduser)->first();
   $user->id = $iduser;
   return view('col-instructor-home',['users'=> $user]);
@@ -138,19 +155,24 @@ Route::get('/collegeintershipmanager/matchInfo',array('uses'=>'collegeintershipm
 
 
 Route::get('/collegeintershipmanager', function () {
-   return view('col-manager-home');
+  $iduser = \Session::get('loginId');
+  $user = \DB::table('collegeintershipmanager')->where('CIM_ID',$iduser)->first();
+  $user->id = $iduser;
+   return view('col-manager-home',['users'=> $user]);
 });
-
-
-
 
 Route::get('/companyrepresentative', function () {
-   return view('comp-representative-home');
+  $iduser = \Session::get('loginId');
+  $user = \DB::table('companyrepresentative')->where('CR_ID',$iduser)->first();
+  $user->id = $iduser;
+  return view('comp-representative-home',['users'=> $user]);
 });
 
-
 Route::get('/companyinstructor', function () {
-   return view('comp-instructor-home');
+  $iduser = \Session::get('loginId');
+  $user = \DB::table('companyinstructor')->where('CI_ID',$iduser)->first();
+  $user->id = $iduser;
+   return view('comp-instructor-home',['users'=> $user]);
 });
 
 Route::get('/companyinstructor/mark', function () {
@@ -195,6 +217,9 @@ Route::get('/collegeinstructor/mark-1', function () {
 });
 
 Route::get('/companyinstructor/mark-1', function () {
+  $iduser = \Session::get('loginId');
+  $user = \DB::table('companyinstructor')->where('CI_ID',$iduser)->first();
+  $user->id = $iduser;
  $students = \DB::select("select * from student");
  $list = array();
 
@@ -205,10 +230,13 @@ Route::get('/companyinstructor/mark-1', function () {
     'studnumber'=>$student->studid,
     'class'=>$student->class) ;
   } 
-  return view('comp-instructor-mark-1', ['students' =>$list]);
+  return view('comp-instructor-mark-1', ['students' =>$list,'users'=>$user]);
 });
 
 Route::get('/companyinstructor/timesheet-1', function () {
+  $iduser = \Session::get('loginId');
+  $user = \DB::table('companyinstructor')->where('CI_ID',$iduser)->first();
+  $user->id = $iduser;
  $students = \DB::select("select * from student");
  $list = array();
 
@@ -219,10 +247,13 @@ Route::get('/companyinstructor/timesheet-1', function () {
     'studnumber'=>$student->studid,
     'class'=>$student->class) ;
   } 
-  return view('comp-instructor-sheet-1', ['students' =>$list]);
+  return view('comp-instructor-sheet-1', ['students' =>$list, 'users'=>$user]);
 });
 
 Route::get('/companyinstructor/rate-1', function () {
+  $iduser = \Session::get('loginId');
+  $user = \DB::table('companyinstructor')->where('CI_ID',$iduser)->first();
+  $user->id = $iduser;
  $students = \DB::select("select * from student");
  $list = array();
 
@@ -233,7 +264,7 @@ Route::get('/companyinstructor/rate-1', function () {
     'studnumber'=>$student->studid,
     'class'=>$student->class) ;
   } 
-  return view('comp-instructor-rate-1', ['students' =>$list]);
+  return view('comp-instructor-rate-1', ['students' =>$list, 'users'=>$user]);
 });
 
 
@@ -245,18 +276,25 @@ Route::get('/companyinstructor/sheet-2/{id}',array('uses'=>'companyinstructorCon
 
 Route::post('/collegeintershipmanager/duyet-topic-2/accept',array('uses'=>'collegeintershipmanagerController@accept'));
 Route::post('/collegeintershipmanager/duyet-topic-2/decline',array('uses'=>'collegeintershipmanagerController@decline'));
+Route::get('/collegeintershipmanager/chat',array('uses'=>'ChatController@chat'));
+Route::post('/collegeintershipmanager/chat',array('uses'=>'ChatController@send'));
+Route::get('/collegeintershipmanager/chat/read',array('uses'=>'ChatController@read'));
+
 
 Route::get('/collegeintershipmanager/duyet-topic-1', function () {
+  $iduser = \Session::get('loginId');
+  $user = \DB::table('collegeintershipmanager')->where('CIM_ID',$iduser)->first();
+  $user->id = $iduser;
   $companies = \DB::select("select * from company");
   $list = array();
 
   foreach ($companies as $company) {
-    $list[] = array(
-      'id'=>$company->idCompany,
-      'name'=>$company->Name);
+  $list[] = array(
+  'id'=>$company->idCompany,
+  'name'=>$company->Name);
   }
 
-  return view('col-manager-duyet-topic-1', ['companies' => $list]);
+  return view('col-manager-duyet-topic-1', ['companies' => $list, 'users' => $user]);
 });
 
 Route::get('/collegeintershipmanager/duyet-topic-2/{id}', function ($id) {

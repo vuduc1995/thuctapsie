@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use Server\Http\Requests;
 
+use Log;
+
 class companyinstructorController extends Controller
 {
    public function showProfileCompanyinstructor(Request $request)
@@ -162,18 +164,19 @@ class companyinstructorController extends Controller
             }
     }
 
-    public function showOutline(Request $request)
-    {
-            $userid = \Session::get('loginId');
-            try{
-
-                $user = \DB::table('deadline')->where('type',6)->first();
-                return view('comp-instructor-outline',['users'=> $user]);
-            }catch(\Exception $e){
-                return view('comp-instructor-outline');
-            }
-
+public function showOutline(Request $request) {
+    $iduser = \Session::get('loginId');
+    Log::info("id:".$iduser);
+    $user = \DB::table('collegeinstructor')->where('CI_ID',$iduser)->first();
+    $user->id = $iduser;
+    try{
+        $deadline = \DB::table('deadline')->where('type',6)->first();
+        $user->time = $deadline->time;
+        return view('comp-instructor-outline',['users'=> $user]);
+    }catch(\Exception $e){
+        Log::info($e);
     }
+}
 
     public function showMark($id) {
       $iduser = \Session::get('loginId');
@@ -187,8 +190,10 @@ class companyinstructorController extends Controller
         $data = \DB::select("SELECT * FROM reportcompanyinstrutor,reportdetail where reportcompanyinstrutor.conent_report = reportdetail.idreportdetail and reportcompanyinstrutor.\"StudentID\" = ".$id);
             }
           
+            if ($data != null && $data->length() > 0) {
           return view('comp-instructor-mark-2', [
             'id' => $id,'data' => $data[0],'users'=> $user ]);
+            }
 
         }catch(\Exception $e){
             return $e;
@@ -205,9 +210,12 @@ class companyinstructorController extends Controller
             } else if (env('DB_CONNECTION') == 'pgsql') {
             $data = \DB::select("SELECT * FROM rate where \"StudentID\" = ".$id);
             }
-              
+            // $data = \DB::table('rate')->where('StudentID',$id)->first();
+
+            if ($data != null && $data->length() > 0) {
               return view('comp-instructor-rate-2', [
                 'id' => $id,'data' => $data[0] ]);
+            }              
 
         }catch(\Exception $e){
                 return $e;
@@ -244,9 +252,11 @@ class companyinstructorController extends Controller
     {
         try {
             // $data = \DB::select("SELECT * FROM sie.rate where StudentID = ".$id);
-              
-              return view('comp-instructor-sheet-2', [
-                'id' => $id]);
+            $iduser = \Session::get('loginId');
+            $user = \DB::table('companyinstructor')->where('CI_ID',$iduser)->first();
+            $user->id = $iduser;
+            return view('comp-instructor-sheet-2', [
+            'id' => $id, 'users'=>$user]);
 
         }catch(\Exception $e){
                 return $e;

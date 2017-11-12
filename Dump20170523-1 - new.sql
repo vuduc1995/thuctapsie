@@ -579,7 +579,23 @@ CREATE TABLE "student" (
 
 
 /*!40000 ALTER TABLE "student" DISABLE KEYS */;
-INSERT INTO "student" VALUES (1,2,'Tata','2017-04-13',3748257,'CNTT 2.02',732497,'Ha Noi','Khong co gi','nhat@gmail.com','female'),(2,7,'Duc','2017-01-01',123,'LTU',1234,'HN','aaafaf','abc@gmail.com','male'),(3,8,'Phuong','2017-01-01',234,'LTU',1234,'HN','vvvv','gggg@gmail.com','male'),(4,9,'Trung','2017-01-01',345,'LTU',1525,'HN','eea','eeeeee@gmail.com','male'),(5,10,'Nam','2017-01-01',456,'LTU',2525,'HN','ee','hhhhhh@gmail.com','male');
+INSERT INTO "student"(
+"Student_ID",
+"name",
+"birthday",
+"studid",
+"class",
+"phone",
+"address",
+"description",
+"email",
+"gender"
+) VALUES 
+(2,'Tata','2017-04-13',3748257,'CNTT 2.02',732497,'Ha Noi','Khong co gi','nhat@gmail.com','female'),
+(7,'Duc','2017-01-01',123,'LTU',1234,'HN','aaafaf','abc@gmail.com','male'),
+(8,'Phuong','2017-01-01',234,'LTU',1234,'HN','vvvv','gggg@gmail.com','male'),
+(9,'Trung','2017-01-01',345,'LTU',1525,'HN','eea','eeeeee@gmail.com','male'),
+(10,'Nam','2017-01-01',456,'LTU',2525,'HN','ee','hhhhhh@gmail.com','male');
 /*!40000 ALTER TABLE "student" ENABLE KEYS */;
 
 --

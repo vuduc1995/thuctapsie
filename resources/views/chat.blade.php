@@ -77,6 +77,7 @@ function openMail123(id,status,header,message,isFeedback,senderName,senderAvatar
 
   // cuc hien thi email
   var big = document.createElement("div");
+  big.setAttribute('class', 'w3-container person');
   var br = document.createElement("br");
   big.appendChild(br);
   var img = document.createElement("img");
@@ -101,21 +102,21 @@ function openMail123(id,status,header,message,isFeedback,senderName,senderAvatar
   h4.appendChild(node);
   big.appendChild(h4);
 
-  var a = document.createElement('a');
-  a.setAttribute('class', 'w3-button w3-light-grey');
-  a.innerHTML = 'Reply';
-  var a_i = document.createElement('i');
-  a_i.setAttribute('class', 'w3-margin-left fa fa-mail-reply');
-  a.appendChild(a_i);
-  big.appendChild(a);
+  // var a = document.createElement('a');
+  // a.setAttribute('class', 'w3-button w3-light-grey');
+  // a.innerHTML = 'Reply';
+  // var a_i = document.createElement('i');
+  // a_i.setAttribute('class', 'w3-margin-left fa fa-mail-reply');
+  // a.appendChild(a_i);
+  // big.appendChild(a);
 
-  a = document.createElement('a');
-  a.setAttribute('class', 'w3-button w3-light-grey');
-  a.innerHTML = 'Forward';
-  var a_i = document.createElement('i');
-  a_i.setAttribute('class', 'w3-margin-left fa fa-arrow-right');
-  a.appendChild(a_i);
-  big.appendChild(a);
+  // a = document.createElement('a');
+  // a.setAttribute('class', 'w3-button w3-light-grey');
+  // a.innerHTML = 'Forward';
+  // var a_i = document.createElement('i');
+  // a_i.setAttribute('class', 'w3-margin-left fa fa-arrow-right');
+  // a.appendChild(a_i);
+  // big.appendChild(a);
 
   var hr = document.createElement("hr");
   big.appendChild(hr);
@@ -157,21 +158,48 @@ function readMessage() {
           messageList = messageList + object[i].id + "-" + object[i].status+ "-" + object[i].header+ "-" + object[i].message + "</br>";
 
 
+
+
+
           var big = document.createElement("a");
           big.setAttribute('class', 'w3-bar-item w3-button w3-border-bottom test w3-hover-light-grey');
           big.setAttribute('onclick', "openMail123("+object[i].id+",'"+object[i].status+"','"+object[i].header+"','"+object[i].message+"',"+object[i].isFeedback+",'"+ object[i].senderName + "','"+object[i].senderAvatar + "')");
+
           var img = document.createElement("img");
           img.setAttribute('class', 'w3-round w3-margin-right');
-          img.setAttribute('src', 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/256/sign-check-icon.png');
+          img.setAttribute('src', '{{ URL::asset('/') }}' + object[i].senderAvatar);
           img.setAttribute('style', 'width:15%;');
+
           var para = document.createElement("span");
-          var node = document.createTextNode("Mail: "+object[i].header);
+          var node = document.createTextNode(object[i].senderName);
           if (object[i].isFeedback) {
             node = document.createTextNode("Feedback: "+object[i].header);
           }
           para.appendChild(node);
-          big.appendChild(img);
-          big.appendChild(para);
+
+          var h6 = document.createElement('h6');
+          var h6_text = document.createTextNode('Mail: ' + object[i].header);
+          if (object[i].isFeedback) {
+            h6_text = document.createTextNode('Feedback: ' + object[i].header);
+          }
+          h6.appendChild(h6_text);
+
+          var p = document.createElement('h6');
+          var text = object[i].message.match(/.{1,100}/g)[0];
+          if (object[i].message.length > 100) {
+            text += "...";
+          }
+          var p_text = document.createTextNode(text);
+          p.appendChild(p_text);
+
+          var div_div_w3 = document.createElement("div");
+          div_div_w3.setAttribute('class', 'w3-container');
+          div_div_w3.appendChild(img);
+          div_div_w3.appendChild(para);
+          div_div_w3.appendChild(h6);
+          div_div_w3.appendChild(p);
+
+          big.appendChild(div_div_w3);
 
           element.appendChild(big);
         }
@@ -193,9 +221,16 @@ function readMessage() {
 <!-- Side Navigation -->
 <nav class="w3-sidebar w3-bar-block w3-collapse w3-white w3-animate-left w3-card" style="z-index:3;width:320px;" id="mySidebar">
 
+  <div class="w3-container">
+        <span class=" w3-margin-right">Hello! {{$users->name}}</span><a href="/{{$subdomain}}"><img class=" w3-large" src="{{ URL::asset($users->avatar) }}" style="width:25%; margin-bottom: -33px; margin-top: 20px; padding-bottom: 20px; margin-left: 15px"></a>
+        <p></p>
+      </div>
+
+<!--
   <a href="/{{$subdomain}}" class="w3-bar-item w3-button w3-border-bottom w3-large"><img src="{{ URL::asset('images/logo60nambk.png') }}" style="width:60%;"></a>
   <a href="javascript:void(0)" onclick="w3_close()" title="Close Sidemenu" 
   class="w3-bar-item w3-button w3-hide-large w3-large">Close <i class="fa fa-remove"></i></a>
+  -->
   <a href="javascript:void(0)" class="w3-bar-item w3-button w3-dark-grey w3-button w3-hover-black w3-left-align" onclick="document.getElementById('id01').style.display='block'">New Message <i class="w3-padding fa fa-pencil"></i></a>
   <a id="myBtn" onclick="myFunc('Demo1')" href="javascript:void(0)" class="w3-bar-item w3-button"><i class="fa fa-inbox w3-margin-right"></i><span id="numOfInbox">Inbox (0)</span><i class="fa fa-caret-down w3-margin-left"></i></a>
   <div id="Demo1" class="w3-hide w3-animate-left">
@@ -227,9 +262,7 @@ function readMessage() {
     -->
   </div>
   </div>
-  <a href="#" class="w3-bar-item w3-button"><i class="fa fa-paper-plane w3-margin-right"></i>Sent</a>
-  <a href="#" class="w3-bar-item w3-button"><i class="fa fa-hourglass-end w3-margin-right"></i>Drafts</a>
-  <a href="#" class="w3-bar-item w3-button"><i class="fa fa-trash w3-margin-right"></i>Trash</a>
+  <a href="/logout" class="w3-bar-item w3-button"><i class="fa fa-sign-out w3-margin-right"></i>Sign Out</a>
 </nav>
 
 <!-- Modal that pops up when you click on "New Message" -->

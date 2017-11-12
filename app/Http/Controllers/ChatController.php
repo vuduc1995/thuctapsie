@@ -31,32 +31,32 @@ class ChatController extends Controller
         }
     }
 
-    public function getSenderInfo($iduser) {
+    public function getUserInfo($iduser) {
         $user = \DB::table('user')->where('iduser',$iduser)->first();
-        $senderName = "";
-        $senderAvatar = 'avatar/avatar_' .$iduser.'.png';
+        $name = "";
+        $avatar = 'avatar/avatar_' .$iduser.'.png';
         if ($user->role == 1) {
             //$admin = \DB::table('user')->where('iduser',$iduser)->first();
-            $senderName = "admin";
+            $name = "admin";
         } else if ($user->role == 2) {
             $student = \DB::table('student')->where('Student_ID',$iduser)->first();
-            $senderName = $student->name;
-            $senderAvatar = 'avatar/avatar_' .$student->Student_ID.'.png'; // wtfffff
-//            Log::info("aaa:".$senderName.",".$senderAvatar);
+            $name = $student->name;
+            $avatar = 'avatar/avatar_' .$student->Student_ID.'.png'; // wtfffff
+//            Log::info("aaa:".$name.",".$avatar);
         } else if ($user->role == 3) {
             $collegeinstructor = \DB::table('collegeinstructor')->where('CI_ID',$iduser)->first();
-            $senderName = $collegeinstructor->name;
+            $name = $collegeinstructor->name;
         } else if ($user->role == 4) {
             $collegeintershipmanager = \DB::table('collegeintershipmanager')->where('CIM_ID',$iduser)->first();
-            $senderName = $collegeintershipmanager->name;
+            $name = $collegeintershipmanager->name;
         } else if ($user->role == 5) {
             $companyrepresentative = \DB::table('companyrepresentative')->where('CR_ID',$iduser)->first();
-            $senderName = $companyrepresentative->name;
+            $name = $companyrepresentative->name;
         } else if ($user->role == 6) {
             $companyinstructor = \DB::table('companyinstructor')->where('CI_ID',$iduser)->first();
-            $senderName = $companyinstructor->name;
+            $name = $companyinstructor->name;
         }
-        return ['senderName' => $senderName, 'senderAvatar' => $senderAvatar ];
+        return ['name' => $name, 'avatar' => $avatar ];
     }
 
     public function read(Request $request)
@@ -68,6 +68,7 @@ class ChatController extends Controller
             $feedback = \DB::table('comment')->get();
             if (!is_null($feedback)) {
                 foreach ($feedback as $fb) {
+                    $senderInfo = self::getUserInfo($fb->StudentID);
                     $result = $result."{";
                     $result = $result."\"id\":".$fb->idComment.",";
                     $result = $result."\"status\":\"\",";
@@ -75,8 +76,8 @@ class ChatController extends Controller
                     $result = $result."\"message\":\"".$fb->Content."\",";
                     $result = $result."\"isFeedback\":true,";
                     $result = $result."\"studentId\":".$fb->StudentID.",";
-                    $result = $result."\"senderName\":\"".self::getSenderInfo($fb->StudentID)['senderName']."\",";
-                    $result = $result."\"senderAvatar\":\"".self::getSenderInfo($fb->StudentID)['senderAvatar']."\"";
+                    $result = $result."\"senderName\":\"".$senderInfo['name']."\",";
+                    $result = $result."\"senderAvatar\":\"".$senderInfo['avatar']."\"";
                     $result = $result."},";
                 }
             }
@@ -92,13 +93,14 @@ class ChatController extends Controller
                 if (is_null($chat)) {
                     Log::info("null");
                 } else {
+                    $senderInfo = self::getUserInfo($chat->iduser_sender);
                     $result = $result."{";
                     $result = $result."\"id\":".$chat->iduser.',';
                     $result = $result."\"status\":\"".$chat->status."\",";
                     $result = $result."\"header\":\"".$chat->header."\",";
                     $result = $result."\"message\":\"".$chat->message."\",";
-                    $result = $result."\"senderName\":\"".self::getSenderInfo($chat->iduser)['senderName']."\",";
-                    $result = $result."\"senderAvatar\":\"".self::getSenderInfo($chat->iduser)['senderAvatar']."\"";
+                    $result = $result."\"senderName\":\"".$senderInfo['name']."\",";
+                    $result = $result."\"senderAvatar\":\"".$senderInfo['avatar']."\"";
                     $result = $result."},";
                 }
             }
@@ -112,16 +114,26 @@ class ChatController extends Controller
     {
         $iduser = \Session::get('loginId');
         $user = \DB::table('user')->where('iduser',$iduser)->first();
+        $userInfo = self::getUserInfo($iduser);
+        Log::info($userInfo);
+        $user->avatar = 'avatar/avatar_' .$user->iduser.'.png';
+        $user->name = $userInfo['name'];
 
         if(is_null($user)){
             return view('chat', ['subdomain' => '']);
         } else {
-            if ($user-> role == 6) {
-                return view('chat',['users'=> $user, 'subdomain' => 'companyinstructor']);
+            if ($user-> role == 1) {
+                return view('chat',['users'=> $user, 'subdomain' => 'admin']);
             } else if ($user-> role == 2) {
                 return view('chat',['users'=> $user, 'subdomain' => 'student']);
             } else if ($user-> role == 3) {
                 return view('chat',['users'=> $user, 'subdomain' => 'collegeinstructor']);
+            } else if ($user-> role == 4) {
+                return view('chat',['users'=> $user, 'subdomain' => 'collegeintershipmanager']);
+            } else if ($user-> role == 5) {
+                return view('chat',['users'=> $user, 'subdomain' => 'companyrepresentative']);
+            } else if ($user-> role == 6) {
+                return view('chat',['users'=> $user, 'subdomain' => 'companyinstructor']);
             }
         }
     }

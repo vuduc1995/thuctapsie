@@ -82,7 +82,7 @@ class adminController extends Controller
                 }
                 $array = json_decode(json_encode($mark), true);
                 
-                   return view('admin-manage-mark',['users'=> $array]);
+                   return view('admin-manage-mark',['array'=> $array, 'users'=> self::getAdmin()]);
 
                 
                    
@@ -93,7 +93,7 @@ class adminController extends Controller
         
 
 
-        return view('stud-manage-cv');
+        return view('stud-manage-cv', [ 'users'=> self::getAdmin()]);
 
    }
 
@@ -127,6 +127,14 @@ class adminController extends Controller
 
    }
 
+   public function getAdmin() {
+                    $iduser = \Session::get('loginId');
+                    $user = new \stdClass();
+                    $user->id = 1;
+                    $user->name = 'Admin';
+                    return $user;
+   }
+
    public function showUser(Request $request){
         try {
               $users = null;
@@ -137,8 +145,9 @@ class adminController extends Controller
                 }
                 
                 $array = json_decode(json_encode($users), true);
+
                 
-                   return view('admin-manage-user',['users'=> $array]);
+                   return view('admin-manage-user',['array'=> $array, 'users'=> self::getAdmin()]);
 
 
 

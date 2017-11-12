@@ -94,10 +94,10 @@ class collegeintershipmanagerController extends Controller
 
      public function showStatistic(Request $request)
     {
-        $userid = \Session::get('loginId');
-       
+        $iduser = \Session::get('loginId');
+        $user = \DB::table('collegeintershipmanager')->where('CIM_ID',$iduser)->first();
+        $user->id = $iduser;
         
-
         try {
                 
                 $mark = null;
@@ -122,7 +122,7 @@ class collegeintershipmanagerController extends Controller
                 $mark1->average = $result;
                 }
                 $array = json_decode(json_encode($mark), true);
-                 return view('col-manager-statistic',['users'=> $array]);
+                 return view('col-manager-statistic',['arraydata'=> $array, 'users' =>$user]);
                  
             }catch(\Exception $e){
                 return $e;

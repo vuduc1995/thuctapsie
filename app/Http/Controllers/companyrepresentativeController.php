@@ -6,18 +6,30 @@ use Illuminate\Http\Request;
 
 use Server\Http\Requests;
 
+use Log;
+
 class companyrepresentativeController extends Controller
 {
     public function showRegistration(Request $request)
     {
-        $userid = \Session::get('loginId');
-        try {
 
-            $user = \DB::table('registration')->where('CR_ID',$userid)->first();
+    $iduser = \Session::get('loginId');
+    Log::info("id.".$iduser);
+  $user = \DB::table('companyrepresentative')->where('CR_ID',$iduser)->first();
+  $user->id = $iduser;
+      try {
+
+            $registration = \DB::table('registration')->where('CR_ID',$iduser)->first();
             $deadline = \DB::table('deadline')->where('type',4)->first();
             $user->deadline = $deadline->time;
+            $user->companyname = $registration->companyname;
+            $user->comp_instructor_name = $registration->comp_instructor_name;
+            $user->quantitysutd = $registration->quantitysutd;
+            $user->speciality = $registration->speciality;
+            $user->requirement = $registration->requirement;
+                        
             if(is_null($user)){
-                return  view('comp-representative-regis');
+                return  view('comp-representative-regis',['users'=> $user]);
             }else{
                 
                    return view('comp-representative-regis',['users'=> $user]);
@@ -26,13 +38,13 @@ class companyrepresentativeController extends Controller
                    
                  }
             }catch(\Exception $e){
-               return view('comp-representative-regis');
+               return view('comp-representative-regis',['users'=> $user]);
             }
 
         
 
 
-        return view('comp-representative-regis');
+        return view('comp-representative-regis',['users'=> $user]);
 
     }
 
@@ -204,6 +216,7 @@ class companyrepresentativeController extends Controller
             $deadline = \DB::table('deadline')->where('type',5)->first();
             $total = count((array)$user);
             $deadline->numberLine = $total;
+            $user->status = 
             if($total == 0){
             }
             if(is_null($user)){

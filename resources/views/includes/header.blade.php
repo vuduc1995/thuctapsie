@@ -131,13 +131,57 @@
               <li><a href="/{{$subdomain}}/mark">Mark</a></li>
             </ul>
           </li>
-        @endif
-  
-        
-      </ul>
+        @elseif ($subdomain == 'companyrepresentative')
+        <li class="dropdown" id="formcv">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Form <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/{{$subdomain}}/Registration">Registration</a></li>
+          </ul>
         </li>
+        <li class="intern dropdown">
+          <a href="/{{$subdomain}}/topic-list" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Intern <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/{{$subdomain}}/topic-list">Topic list</a></li>
+        </ul>
+        </li>
+        @elseif ($subdomain == 'companyinstructor')
+        <li class="intern dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Intern <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/{{$subdomain}}/outline">Outline</a></li>
+            <li><a href="/{{$subdomain}}/mark-1">Mark's form</a></li>
+            <li><a href="/{{$subdomain}}/timesheet-1">Timesheet</a></li>
+            <li><a href="/{{$subdomain}}/rate-1">Rate</a></li>
+          </ul>
+        </li>
+        @elseif ($subdomain == 'collegeintershipmanager')
+          <li><a href="/{{$subdomain}}/duyet-topic-1">Censorship</a></li>
+          <li><a href="/{{$subdomain}}/matched-list">Matched list</a></li>
+          <li><a href="#">Internship Assignment</a></li>
+          <li><a href="/{{$subdomain}}/statistic">Statistics</a></li>
+        @elseif ($subdomain == 'companyrepresentative')
+          <li class="dropdown" id="formcv">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Form <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+          <li><a href="/{{$subdomain}}/Registration">Registration</a></li>
+          </ul>
+          </li>
+          <li class="intern dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Intern <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+          <li><a href="/{{$subdomain}}/topic-list">Topic list</a></li>
+          </ul>
+          </li>
+@elseif ($subdomain == 'admin')
+         <li><a href="/{{$subdomain}}/manager-user">Manage User</a></li>
+        <li><a href="/{{$subdomain}}/manager-mark">Manage Mark</a></li>
+        <li><a href="/{{$subdomain}}/auto-match">Auto Match Info</a></li>
+       
 
-        
+
+        @endif
+        <li class="active"><a href="/{{$subdomain}}/chat">Message</a></li>
+
       </ul>
       
       
